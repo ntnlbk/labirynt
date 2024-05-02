@@ -9,7 +9,7 @@ package labirynt;
  * @author Anton
  */
 public class MainFrame extends javax.swing.JFrame {
-    //sprawdzenie git - Natalia
+    //sprawdzenie git - Natalia 2
 
     /**
      * Creates new form MainFrame

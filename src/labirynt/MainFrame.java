@@ -26,22 +26,19 @@ public class MainFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
         ToolBar = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        chooseStartButton = new javax.swing.JButton();
+        chooseEndButton = new javax.swing.JButton();
+        jSeparator = new javax.swing.JToolBar.Separator();
+        findPathButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        pathButton = new javax.swing.JButton();
-        jMenuBar2 = new javax.swing.JMenuBar();
-        fileLoadMenu = new javax.swing.JMenu();
-
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        rowsLabel = new javax.swing.JLabel();
+        columnsLabel = new javax.swing.JLabel();
+        startLabel = new javax.swing.JLabel();
+        endLabel = new javax.swing.JLabel();
+        jMenuBar = new javax.swing.JMenuBar();
+        BINfileLoadButton = new javax.swing.JMenu();
+        TXTfileLoadButton = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -49,39 +46,58 @@ public class MainFrame extends javax.swing.JFrame {
         ToolBar.setOrientation(javax.swing.SwingConstants.VERTICAL);
         ToolBar.setRollover(true);
 
-        jButton1.setText("Punkt początkowy");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        ToolBar.add(jButton1);
+        chooseStartButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        chooseStartButton.setText("Wybierz punkt początkowy");
+        chooseStartButton.setFocusable(false);
+        chooseStartButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chooseStartButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ToolBar.add(chooseStartButton);
 
-        jButton2.setText("Punkt końcowy");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        ToolBar.add(jButton2);
+        chooseEndButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        chooseEndButton.setText("Wybierz punkt końcowy");
+        chooseEndButton.setFocusable(false);
+        chooseEndButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chooseEndButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ToolBar.add(chooseEndButton);
+        ToolBar.add(jSeparator);
+
+        findPathButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        findPathButton.setText("Znajdź ścieżkę");
+        findPathButton.setFocusable(false);
+        findPathButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        findPathButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        ToolBar.add(findPathButton);
         ToolBar.add(jSeparator1);
 
-        pathButton.setText("Znajdź ścieżkę");
-        pathButton.setFocusable(false);
-        pathButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        pathButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        pathButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pathButtonActionPerformed(evt);
-            }
-        });
-        ToolBar.add(pathButton);
+        rowsLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        rowsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        rowsLabel.setText("Wiersze: 0");
+        ToolBar.add(rowsLabel);
 
-        fileLoadMenu.setText("Wczytaj z pliku");
-        jMenuBar2.add(fileLoadMenu);
+        columnsLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        columnsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        columnsLabel.setText("Kolumny: 0");
+        ToolBar.add(columnsLabel);
 
-        setJMenuBar(jMenuBar2);
+        startLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        startLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        startLabel.setText("Start: 0");
+        ToolBar.add(startLabel);
+
+        endLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        endLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        endLabel.setText("Koniec: 0");
+        ToolBar.add(endLabel);
+
+        BINfileLoadButton.setText("Wczytaj z pliku BIN");
+        BINfileLoadButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jMenuBar.add(BINfileLoadButton);
+
+        TXTfileLoadButton.setText("Wczytaj z pliku TXT");
+        TXTfileLoadButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jMenuBar.add(TXTfileLoadButton);
+
+        setJMenuBar(jMenuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -89,27 +105,19 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1123, Short.MAX_VALUE))
+                .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(1031, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void pathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pathButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_pathButtonActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -117,15 +125,18 @@ public class MainFrame extends javax.swing.JFrame {
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu BINfileLoadButton;
+    private javax.swing.JMenu TXTfileLoadButton;
     private javax.swing.JToolBar ToolBar;
-    private javax.swing.JMenu fileLoadMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuBar jMenuBar2;
+    private javax.swing.JButton chooseEndButton;
+    private javax.swing.JButton chooseStartButton;
+    private javax.swing.JLabel columnsLabel;
+    private javax.swing.JLabel endLabel;
+    private javax.swing.JButton findPathButton;
+    private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JToolBar.Separator jSeparator;
     private javax.swing.JToolBar.Separator jSeparator1;
-    private javax.swing.JButton pathButton;
+    private javax.swing.JLabel rowsLabel;
+    private javax.swing.JLabel startLabel;
     // End of variables declaration//GEN-END:variables
 }

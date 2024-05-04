@@ -9,12 +9,16 @@ package labirynt;
  * @author Anton
  */
 public class MainFrame extends javax.swing.JFrame {
+    
+    
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
+        Maze maze = new Maze();
+        maze.initializeWindow(mazePanel);
     }
 
     /**
@@ -36,6 +40,7 @@ public class MainFrame extends javax.swing.JFrame {
         columnsLabel = new javax.swing.JLabel();
         startLabel = new javax.swing.JLabel();
         endLabel = new javax.swing.JLabel();
+        mazePanel = new javax.swing.JPanel();
         jMenuBar = new javax.swing.JMenuBar();
         BINfileLoadButton = new javax.swing.JMenu();
         TXTfileLoadButton = new javax.swing.JMenu();
@@ -43,6 +48,7 @@ public class MainFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ToolBar.setBackground(new java.awt.Color(204, 255, 204));
+        ToolBar.setBorder(null);
         ToolBar.setOrientation(javax.swing.SwingConstants.VERTICAL);
         ToolBar.setRollover(true);
 
@@ -89,6 +95,17 @@ public class MainFrame extends javax.swing.JFrame {
         endLabel.setText("Koniec: 0");
         ToolBar.add(endLabel);
 
+        javax.swing.GroupLayout mazePanelLayout = new javax.swing.GroupLayout(mazePanel);
+        mazePanel.setLayout(mazePanelLayout);
+        mazePanelLayout.setHorizontalGroup(
+            mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1003, Short.MAX_VALUE)
+        );
+        mazePanelLayout.setVerticalGroup(
+            mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         BINfileLoadButton.setText("Wczytaj z pliku BIN");
         BINfileLoadButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jMenuBar.add(BINfileLoadButton);
@@ -106,13 +123,17 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1031, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(mazePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
@@ -136,6 +157,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JToolBar.Separator jSeparator;
     private javax.swing.JToolBar.Separator jSeparator1;
+    private javax.swing.JPanel mazePanel;
     private javax.swing.JLabel rowsLabel;
     private javax.swing.JLabel startLabel;
     // End of variables declaration//GEN-END:variables

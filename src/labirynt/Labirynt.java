@@ -14,7 +14,8 @@ public class Labirynt {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.print("Hello World!\n");
+        MainFrame mainFrame = new MainFrame();
+        mainFrame.setVisible(true);
     }
     
 }

@@ -17,9 +17,10 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        Maze maze = new Maze();
+        /*Maze maze = new Maze();
         maze.readFile();
         maze.initializeWindowFromFile(mazePanel);
+        */ 
     }
 
     /**
@@ -47,28 +48,39 @@ public class MainFrame extends javax.swing.JFrame {
         TXTfileLoadButton = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
 
-        ToolBar.setBackground(new java.awt.Color(204, 255, 204));
+        ToolBar.setBackground(new java.awt.Color(255, 255, 255));
         ToolBar.setBorder(null);
         ToolBar.setOrientation(javax.swing.SwingConstants.VERTICAL);
         ToolBar.setRollover(true);
+        ToolBar.setMargin(new java.awt.Insets(4, 4, 4, 4));
 
+        chooseStartButton.setBackground(new java.awt.Color(205, 242, 254));
         chooseStartButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         chooseStartButton.setText("Wybierz punkt początkowy");
         chooseStartButton.setFocusable(false);
-        chooseStartButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chooseStartButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        chooseStartButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        chooseStartButton.setMaximumSize(new java.awt.Dimension(252, 35));
+        chooseStartButton.setMinimumSize(new java.awt.Dimension(252, 35));
+        chooseStartButton.setPreferredSize(new java.awt.Dimension(252, 35));
         chooseStartButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         ToolBar.add(chooseStartButton);
 
+        chooseEndButton.setBackground(new java.awt.Color(205, 242, 254));
         chooseEndButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         chooseEndButton.setText("Wybierz punkt końcowy");
         chooseEndButton.setFocusable(false);
-        chooseEndButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        chooseEndButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        chooseEndButton.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
+        chooseEndButton.setMaximumSize(new java.awt.Dimension(252, 35));
+        chooseEndButton.setMinimumSize(new java.awt.Dimension(252, 35));
+        chooseEndButton.setPreferredSize(new java.awt.Dimension(252, 35));
         chooseEndButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         ToolBar.add(chooseEndButton);
         ToolBar.add(jSeparator);
 
+        findPathButton.setBackground(new java.awt.Color(102, 204, 255));
         findPathButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         findPathButton.setText("Znajdź ścieżkę");
         findPathButton.setFocusable(false);
@@ -107,8 +119,10 @@ public class MainFrame extends javax.swing.JFrame {
         );
         mazePanelLayout.setVerticalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 884, Short.MAX_VALUE)
+            .addGap(0, 1080, Short.MAX_VALUE)
         );
+
+        jMenuBar.setBackground(new java.awt.Color(102, 204, 255));
 
         BINfileLoadButton.setText("Wczytaj z pliku BIN");
         BINfileLoadButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
@@ -138,9 +152,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 884, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addContainerGap(532, Short.MAX_VALUE))
         );
 
         pack();

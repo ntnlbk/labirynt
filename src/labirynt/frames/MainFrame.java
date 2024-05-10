@@ -2,7 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package labirynt;
+package labirynt.frames;
+
+import java.io.File;
+import javax.swing.JFileChooser;
+import labirynt.MazeData;
+import labirynt.printers.MazePrinter;
+import labirynt.readers.MazeReader;
+import labirynt.readers.TxtReader;
 
 /**
  *
@@ -10,17 +17,15 @@ package labirynt;
  */
 public class MainFrame extends javax.swing.JFrame {
     
-    
+    private MazeReader reader;
+    private final MazeData mazeData;
 
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        /*Maze maze = new Maze();
-        maze.readFile();
-        maze.initializeWindowFromFile(mazePanel);
-        */ 
+        mazeData = new MazeData();  
     }
 
     /**
@@ -44,8 +49,7 @@ public class MainFrame extends javax.swing.JFrame {
         endLabel = new javax.swing.JLabel();
         mazePanel = new javax.swing.JPanel();
         jMenuBar = new javax.swing.JMenuBar();
-        BINfileLoadButton = new javax.swing.JMenu();
-        TXTfileLoadButton = new javax.swing.JMenu();
+        fileLoadButton = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -115,22 +119,23 @@ public class MainFrame extends javax.swing.JFrame {
         mazePanel.setLayout(mazePanelLayout);
         mazePanelLayout.setHorizontalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
+            .addGap(0, 732, Short.MAX_VALUE)
         );
         mazePanelLayout.setVerticalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1080, Short.MAX_VALUE)
+            .addGap(0, 732, Short.MAX_VALUE)
         );
 
         jMenuBar.setBackground(new java.awt.Color(102, 204, 255));
 
-        BINfileLoadButton.setText("Wczytaj z pliku BIN");
-        BINfileLoadButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jMenuBar.add(BINfileLoadButton);
-
-        TXTfileLoadButton.setText("Wczytaj z pliku TXT");
-        TXTfileLoadButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jMenuBar.add(TXTfileLoadButton);
+        fileLoadButton.setText("Wczytaj z pliku");
+        fileLoadButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        fileLoadButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fileLoadButtonMouseClicked(evt);
+            }
+        });
+        jMenuBar.add(fileLoadButton);
 
         setJMenuBar(jMenuBar);
 
@@ -141,38 +146,43 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(116, 116, 116)
+                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(730, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(532, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(824, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void fileLoadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileLoadButtonMouseClicked
+        fileLoadBtnClicked();
+    }//GEN-LAST:event_fileLoadButtonMouseClicked
+
+   
     /**
      * @param args the command line arguments
      */
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu BINfileLoadButton;
-    private javax.swing.JMenu TXTfileLoadButton;
     private javax.swing.JToolBar ToolBar;
     private javax.swing.JButton chooseEndButton;
     private javax.swing.JButton chooseStartButton;
     private javax.swing.JLabel columnsLabel;
     private javax.swing.JLabel endLabel;
+    private javax.swing.JMenu fileLoadButton;
     private javax.swing.JButton findPathButton;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JToolBar.Separator jSeparator;
@@ -181,4 +191,41 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel rowsLabel;
     private javax.swing.JLabel startLabel;
     // End of variables declaration//GEN-END:variables
+
+    private void fileLoadBtnClicked() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.showOpenDialog(MainFrame.this);
+        File file = fileChooser.getSelectedFile();
+        if (file != null){
+            parseFile(file);
+            reader.readFromFile(mazeData);
+            print();
+        }
+    }
+    
+    private void parseFile(File file) {
+        String fileName = file.getName();
+        switch (getFileExtension(fileName)){
+        
+            case "txt" -> reader = new TxtReader(file.getAbsolutePath());
+            
+            case "bin" -> {
+            }
+        
+        }
+    }
+    
+    private static String getFileExtension(String fileName) {
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
+    }
+    
+    private void print(){
+        MazePrinter printer = new MazePrinter(mazeData.mazeCells);
+        mazePanel.removeAll();
+        printer.print(mazePanel);
+    
+    }
+
+    
 }

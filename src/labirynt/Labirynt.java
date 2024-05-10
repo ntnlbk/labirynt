@@ -4,6 +4,8 @@
  */
 package labirynt;
 
+import labirynt.frames.MainFrame;
+
 /**
  *
  * @author Anton

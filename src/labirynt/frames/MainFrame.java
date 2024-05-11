@@ -4,9 +4,14 @@
  */
 package labirynt.frames;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import labirynt.MazeData;
+import labirynt.printers.MazePrint;
 import labirynt.printers.MazePrinter;
 import labirynt.readers.MazeReader;
 import labirynt.readers.TxtReader;
@@ -25,7 +30,8 @@ public class MainFrame extends javax.swing.JFrame {
      */
     public MainFrame() {
         initComponents();
-        mazeData = new MazeData();  
+        mazeData = new MazeData(); 
+        printmaze();
     }
 
     /**
@@ -113,17 +119,18 @@ public class MainFrame extends javax.swing.JFrame {
         endLabel.setText("Koniec: 0");
         ToolBar.add(endLabel);
 
+        mazePanel.setBackground(new java.awt.Color(255, 255, 255));
         mazePanel.setPreferredSize(new java.awt.Dimension(1200, 1080));
 
         javax.swing.GroupLayout mazePanelLayout = new javax.swing.GroupLayout(mazePanel);
         mazePanel.setLayout(mazePanelLayout);
         mazePanelLayout.setHorizontalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 732, Short.MAX_VALUE)
+            .addGap(0, 5120, Short.MAX_VALUE)
         );
         mazePanelLayout.setVerticalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 732, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jMenuBar.setBackground(new java.awt.Color(102, 204, 255));
@@ -146,21 +153,18 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116)
-                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(730, Short.MAX_VALUE))
+                .addGap(32, 32, 32)
+                .addComponent(mazePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 5120, Short.MAX_VALUE)
+                .addContainerGap(897, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 554, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(77, 77, 77)
-                        .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 732, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(824, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(ToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 5120, Short.MAX_VALUE)
+                    .addComponent(mazePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 5120, Short.MAX_VALUE))
+                .addContainerGap(1073, Short.MAX_VALUE))
         );
 
         pack();
@@ -199,7 +203,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (file != null){
             parseFile(file);
             reader.readFromFile(mazeData);
-            print();
+            //print();
         }
     }
     
@@ -220,12 +224,31 @@ public class MainFrame extends javax.swing.JFrame {
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
     
-    private void print(){
+    /*private void print(){
         MazePrinter printer = new MazePrinter(mazeData.mazeCells);
         mazePanel.removeAll();
         printer.print(mazePanel);
     
+    }*/
+    private void printmaze(){
+       MazePrint mazePrint = new MazePrint("examples/maze6x6.txt");
+       mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
+       mazePrint.setPreferredSize(new Dimension(50000,50000));
+       mazePanel.add(mazePrint);
+       mazePanel.revalidate();
+       mazePanel.repaint();
     }
+    /*
+    private void printsquare(Color c){
+       JPanel squarePanel = new JPanel();
+       squarePanel.setPreferredSize( new Dimension(5,5));
+       squarePanel.setBackground(c);
+       mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+       mazePanel.add(squarePanel);
+       mazePanel.revalidate();
+       mazePanel.repaint();
+    }
+    */
 
     
 }

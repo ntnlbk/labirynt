@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import labirynt.MazeData;
 import labirynt.printers.MazePrint;
 import labirynt.printers.MazePrinter;
@@ -236,7 +237,9 @@ public class MainFrame extends javax.swing.JFrame {
        mazePanel.removeAll();
        mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
        mazePrint.setPreferredSize(new Dimension(50000,50000));
-       mazePanel.add(mazePrint);
+       JScrollPane scrollPane = new JScrollPane(mazePrint);
+       scrollPane.setPreferredSize(new Dimension(1000,700));
+       mazePanel.add(scrollPane);
        mazePanel.revalidate();
        mazePanel.repaint();
     }

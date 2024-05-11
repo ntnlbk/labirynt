@@ -21,6 +21,7 @@ public class TxtReader implements MazeReader {
     
     public TxtReader(String filePath){
         this.filePath = filePath;
+        System.out.println(filePath);
     }
 
     @Override

@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
+import labirynt.Cell;
 
 /**
  *
@@ -19,8 +21,10 @@ import java.io.IOException;
 public class MazePrint extends JPanel{
     
     private String filePath;
+    private final List<List<Cell>> cells;
     
-    public MazePrint(String filePath){
+    public MazePrint(List<List<Cell>> cells){
+        this.cells=cells;
         setBackground(Color.white);
     }
     
@@ -28,7 +32,26 @@ public class MazePrint extends JPanel{
     protected void paintComponent(Graphics g){
         int squareSize = 7;
         super.paintComponent(g);
-        try (BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Admin\\Documents\\NetBeansProjects\\labirynt\\src\\labirynt\\examples\\maze100x100.txt"))){
+        
+        if(cells!=null){
+            for(int row =0; row<cells.size(); row++){
+                List<Cell> rowCells = cells.get(row);
+                for(int col = 0; col < rowCells.size(); col++){
+                    Cell cell = rowCells.get(col);
+                    switch (cell){
+                        case WALL:
+                            g.setColor(Color.black);
+                            break;
+                        default:
+                            g.setColor(Color.white);
+                            break;
+                    }
+                    g.fillRect(col * squareSize, row * squareSize, squareSize, squareSize);
+                }
+            }
+        }
+        
+        /*try (BufferedReader br = new BufferedReader(new FileReader(filePath))){
             int row = 0;
             String line;
             while ((line = br.readLine()) != null) {
@@ -47,6 +70,7 @@ public class MazePrint extends JPanel{
         } catch (IOException e){
             System.out.println(e.getMessage());
         }
+        */
     }
     
     /*public Dimension getPrefferedSize() {

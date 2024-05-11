@@ -31,7 +31,6 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         mazeData = new MazeData(); 
-        printmaze();
     }
 
     /**
@@ -203,7 +202,8 @@ public class MainFrame extends javax.swing.JFrame {
         if (file != null){
             parseFile(file);
             reader.readFromFile(mazeData);
-            //print();
+            //printmaze(file.getAbsolutePath());
+            printmaze();
         }
     }
     
@@ -230,8 +230,10 @@ public class MainFrame extends javax.swing.JFrame {
         printer.print(mazePanel);
     
     }*/
+    
     private void printmaze(){
-       MazePrint mazePrint = new MazePrint("examples/maze6x6.txt");
+       MazePrint mazePrint = new MazePrint(mazeData.mazeCells);
+       mazePanel.removeAll();
        mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
        mazePrint.setPreferredSize(new Dimension(50000,50000));
        mazePanel.add(mazePrint);

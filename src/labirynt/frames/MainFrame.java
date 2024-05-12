@@ -4,16 +4,13 @@
  */
 package labirynt.frames;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import labirynt.MazeData;
 import labirynt.printers.MazePrint;
-import labirynt.printers.MazePrinter;
 import labirynt.readers.MazeReader;
 import labirynt.readers.TxtReader;
 
@@ -203,7 +200,6 @@ public class MainFrame extends javax.swing.JFrame {
         if (file != null){
             parseFile(file);
             reader.readFromFile(mazeData);
-            //printmaze(file.getAbsolutePath());
             printmaze();
         }
     }
@@ -225,12 +221,7 @@ public class MainFrame extends javax.swing.JFrame {
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
     
-    /*private void print(){
-        MazePrinter printer = new MazePrinter(mazeData.mazeCells);
-        mazePanel.removeAll();
-        printer.print(mazePanel);
-    
-    }*/
+   
     
     private void printmaze(){
        MazePrint mazePrint = new MazePrint(mazeData.mazeCells);
@@ -243,17 +234,7 @@ public class MainFrame extends javax.swing.JFrame {
        mazePanel.revalidate();
        mazePanel.repaint();
     }
-    /*
-    private void printsquare(Color c){
-       JPanel squarePanel = new JPanel();
-       squarePanel.setPreferredSize( new Dimension(5,5));
-       squarePanel.setBackground(c);
-       mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-       mazePanel.add(squarePanel);
-       mazePanel.revalidate();
-       mazePanel.repaint();
-    }
-    */
+    
 
     
 }

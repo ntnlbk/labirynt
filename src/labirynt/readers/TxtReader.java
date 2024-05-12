@@ -17,7 +17,7 @@ import labirynt.MazeData;
  */
 public class TxtReader implements MazeReader {
     
-    private String filePath;
+    private final String filePath;
     
     public TxtReader(String filePath){
         this.filePath = filePath;

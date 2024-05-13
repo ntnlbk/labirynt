@@ -29,6 +29,8 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         mazeData = new MazeData(); 
+        //JScrollPane scroller = new JScrollPane(messageLabel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        messageLabel.setText("<html>");
     }
 
     /**
@@ -51,6 +53,9 @@ public class MainFrame extends javax.swing.JFrame {
         startLabel = new javax.swing.JLabel();
         endLabel = new javax.swing.JLabel();
         mazePanel = new javax.swing.JPanel();
+        jScrollPane = new javax.swing.JScrollPane();
+        messagePanel = new javax.swing.JPanel();
+        messageLabel = new javax.swing.JLabel();
         jMenuBar = new javax.swing.JMenuBar();
         fileLoadButton = new javax.swing.JMenu();
 
@@ -123,12 +128,36 @@ public class MainFrame extends javax.swing.JFrame {
         mazePanel.setLayout(mazePanelLayout);
         mazePanelLayout.setHorizontalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 5120, Short.MAX_VALUE)
+            .addGap(0, 1317, Short.MAX_VALUE)
         );
         mazePanelLayout.setVerticalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 5045, Short.MAX_VALUE)
         );
+
+        jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+        messageLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        messageLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        javax.swing.GroupLayout messagePanelLayout = new javax.swing.GroupLayout(messagePanel);
+        messagePanel.setLayout(messagePanelLayout);
+        messagePanelLayout.setHorizontalGroup(
+            messagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(messagePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        messagePanelLayout.setVerticalGroup(
+            messagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, messagePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jScrollPane.setViewportView(messagePanel);
 
         jMenuBar.setBackground(new java.awt.Color(102, 204, 255));
 
@@ -150,17 +179,20 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32)
-                .addComponent(mazePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 5120, Short.MAX_VALUE)
-                .addContainerGap(897, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1317, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(4438, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(ToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 5120, Short.MAX_VALUE)
-                    .addComponent(mazePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 5120, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 948, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 5045, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 5120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(1073, Short.MAX_VALUE))
         );
 
@@ -186,9 +218,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu fileLoadButton;
     private javax.swing.JButton findPathButton;
     private javax.swing.JMenuBar jMenuBar;
+    private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JToolBar.Separator jSeparator;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPanel mazePanel;
+    private javax.swing.JLabel messageLabel;
+    private javax.swing.JPanel messagePanel;
     private javax.swing.JLabel rowsLabel;
     private javax.swing.JLabel startLabel;
     // End of variables declaration//GEN-END:variables
@@ -198,9 +233,14 @@ public class MainFrame extends javax.swing.JFrame {
         fileChooser.showOpenDialog(MainFrame.this);
         File file = fileChooser.getSelectedFile();
         if (file != null){
+            showMessage("Wybrano plik: <br>" + file.getName() + "<br>");
             parseFile(file);
-            reader.readFromFile(mazeData);
-            printmaze();
+            if(reader != null){
+                reader.readFromFile(mazeData);
+                showMessage("Wczytano labirynt: " + mazeData.columns + "x" + mazeData.rows + "<br>");
+                printMaze();
+                setMazeLabels();  
+            }      
         }
     }
     
@@ -208,11 +248,17 @@ public class MainFrame extends javax.swing.JFrame {
         String fileName = file.getName();
         switch (getFileExtension(fileName)){
         
-            case "txt" -> reader = new TxtReader(file.getAbsolutePath());
+            case "txt" -> {
+                showMessage("Plik tekstowy <br>");
+                reader = new TxtReader(file.getAbsolutePath());
+            }
             
             case "bin" -> {
+                showMessage("Plik binarny <br>");
             }
-        
+            default ->{
+                showMessage("Plik ma format nieobsługiwany: " + getFileExtension(fileName) + "<br>");
+            }
         }
     }
     
@@ -223,18 +269,25 @@ public class MainFrame extends javax.swing.JFrame {
     
    
     
-    private void printmaze(){
+    private void printMaze(){
        MazePrint mazePrint = new MazePrint(mazeData.mazeCells);
        mazePanel.removeAll();
        mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
        mazePrint.setPreferredSize(new Dimension(50000,50000));
        JScrollPane scrollPane = new JScrollPane(mazePrint);
-       scrollPane.setPreferredSize(new Dimension(1000,700));
+       scrollPane.setPreferredSize(new Dimension(1250,900));
        mazePanel.add(scrollPane);
        mazePanel.revalidate();
        mazePanel.repaint();
     }
-    
 
+    private void setMazeLabels() {
+        columnsLabel.setText("Kolumny: " + mazeData.columns);
+        rowsLabel.setText("Wiersze: " + mazeData.rows);
+    }
     
+    private void showMessage(String text){
+        String oldText = messageLabel.getText();
+        messageLabel.setText(oldText + text);
+    }
 }

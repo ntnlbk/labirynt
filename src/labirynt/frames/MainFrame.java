@@ -128,11 +128,11 @@ public class MainFrame extends javax.swing.JFrame {
         mazePanel.setLayout(mazePanelLayout);
         mazePanelLayout.setHorizontalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1317, Short.MAX_VALUE)
+            .addGap(0, 900, Short.MAX_VALUE)
         );
         mazePanelLayout.setVerticalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 5045, Short.MAX_VALUE)
+            .addGap(0, 5000, Short.MAX_VALUE)
         );
 
         jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -151,10 +151,10 @@ public class MainFrame extends javax.swing.JFrame {
         );
         messagePanelLayout.setVerticalGroup(
             messagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, messagePanelLayout.createSequentialGroup()
+            .addGroup(messagePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 934, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(messageLabel)
+                .addContainerGap(678, Short.MAX_VALUE))
         );
 
         jScrollPane.setViewportView(messagePanel);
@@ -180,19 +180,19 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 1317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(4438, Short.MAX_VALUE))
+                .addContainerGap(4843, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 948, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 5045, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 5120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 5000, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 5120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(1073, Short.MAX_VALUE))
         );
 
@@ -273,9 +273,9 @@ public class MainFrame extends javax.swing.JFrame {
        MazePrint mazePrint = new MazePrint(mazeData.mazeCells);
        mazePanel.removeAll();
        mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
-       mazePrint.setPreferredSize(new Dimension(50000,50000));
+       mazePrint.setPreferredSize(new Dimension(15000,15000));
        JScrollPane scrollPane = new JScrollPane(mazePrint);
-       scrollPane.setPreferredSize(new Dimension(1250,900));
+       scrollPane.setPreferredSize(new Dimension(800,600));
        mazePanel.add(scrollPane);
        mazePanel.revalidate();
        mazePanel.repaint();

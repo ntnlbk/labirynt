@@ -20,7 +20,6 @@ import labirynt.readers.TxtReader;
  */
 public class MainFrame extends javax.swing.JFrame {
     
-    private MazeReader reader;
     private final MazeData mazeData;
 
     /**
@@ -29,7 +28,6 @@ public class MainFrame extends javax.swing.JFrame {
     public MainFrame() {
         initComponents();
         mazeData = new MazeData(); 
-        //JScrollPane scroller = new JScrollPane(messageLabel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         messageLabel.setText("<html>");
     }
 
@@ -234,23 +232,18 @@ public class MainFrame extends javax.swing.JFrame {
         File file = fileChooser.getSelectedFile();
         if (file != null){
             showMessage("Wybrano plik: <br>" + file.getName() + "<br>");
-            parseFile(file);
-            if(reader != null){
-                reader.readFromFile(mazeData);
-                showMessage("Wczytano labirynt: " + mazeData.columns + "x" + mazeData.rows + "<br>");
-                printMaze();
-                setMazeLabels();  
-            }      
+            parseFile(file);    
         }
     }
     
     private void parseFile(File file) {
+        MazeReader reader;
         String fileName = file.getName();
         switch (getFileExtension(fileName)){
-        
             case "txt" -> {
                 showMessage("Plik tekstowy <br>");
                 reader = new TxtReader(file.getAbsolutePath());
+                readFile(reader);
             }
             
             case "bin" -> {
@@ -260,6 +253,14 @@ public class MainFrame extends javax.swing.JFrame {
                 showMessage("Plik ma format nieobsługiwany: " + getFileExtension(fileName) + "<br>");
             }
         }
+        
+    }
+    
+    private void readFile(MazeReader reader){
+        reader.readFromFile(mazeData);
+        showMessage("Wczytano labirynt: " + mazeData.getColumns() + "x" + mazeData.getRows() + "<br>");
+        printMaze();
+        setMazeLabels();  
     }
     
     private static String getFileExtension(String fileName) {
@@ -270,7 +271,7 @@ public class MainFrame extends javax.swing.JFrame {
    
     
     private void printMaze(){
-       MazePrint mazePrint = new MazePrint(mazeData.mazeCells);
+       MazePrint mazePrint = new MazePrint(mazeData);
        mazePanel.removeAll();
        mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
        mazePrint.setPreferredSize(new Dimension(15000,15000));
@@ -282,8 +283,8 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void setMazeLabels() {
-        columnsLabel.setText("Kolumny: " + mazeData.columns);
-        rowsLabel.setText("Wiersze: " + mazeData.rows);
+        columnsLabel.setText("Kolumny: " + mazeData.getColumns());
+        rowsLabel.setText("Wiersze: " + mazeData.getRows());
     }
     
     private void showMessage(String text){

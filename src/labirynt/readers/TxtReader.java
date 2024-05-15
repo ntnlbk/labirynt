@@ -43,9 +43,9 @@ public class TxtReader implements MazeReader {
                 }
                 
             } 
-            mazeData.mazeCells = (List)cells;
-            mazeData.columns = (cells.get(0).size() - 1) / 2;
-            mazeData.rows = (cells.size() - 1) / 2;
+            mazeData.setMazeCells((List)cells);
+            mazeData.setColumns((cells.get(0).size() - 1) / 2);
+            mazeData.setRows((cells.size() - 1) / 2);
             fin.close();
         }
         catch(IOException ex){

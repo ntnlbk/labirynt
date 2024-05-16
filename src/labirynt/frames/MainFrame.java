@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import labirynt.MazeData;
 import labirynt.printers.MazePrint;
+import labirynt.readers.BinReader;
 import labirynt.readers.MazeReader;
 import labirynt.readers.TxtReader;
 
@@ -247,6 +248,8 @@ public class MainFrame extends javax.swing.JFrame {
             }
             
             case "bin" -> {
+                reader = new BinReader(file.getAbsolutePath());
+                readFile(reader);
                 showMessage("Plik binarny <br>");
             }
             default ->{

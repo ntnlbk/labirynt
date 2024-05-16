@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +23,8 @@ public class BinReader implements MazeReader{
     
     private final String filePath;
     private ArrayList<Cell> subList = new ArrayList<>() ; 
-    private  ArrayList<ArrayList<Cell>> cells = new ArrayList();
+    private final  ArrayList<ArrayList<Cell>> cells = new ArrayList();
+    private int subListMaxSize;
     public BinReader(String filePath){
         this.filePath = filePath;
        
@@ -38,7 +38,6 @@ public class BinReader implements MazeReader{
             readRowsAndColumns(inputStream, mazeData) ;
             readEntryAndExit(inputStream, mazeData);
             readMaze(inputStream, mazeData);
-            
         } catch (FileNotFoundException ex) {
             Logger.getLogger(BinReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -50,10 +49,9 @@ public class BinReader implements MazeReader{
     private void readRowsAndColumns(InputStream inputStream, MazeData mazeData) throws IOException {
         int columns = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setColumns(columns);
-        System.out.print("columns: " + columns + "\n");
         int rows = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setRows(rows);
-        System.out.print("rows: " + rows + "\n");
+        subListMaxSize = mazeData.getColumns()*2+1;
     }
 
     private void readFileId(InputStream inputStream) throws IOException {
@@ -62,18 +60,13 @@ public class BinReader implements MazeReader{
 
     private void readEntryAndExit(InputStream inputStream, MazeData mazeData) throws IOException{
         int entryX = readTwoBytesToInt(inputStream);
-        System.out.print("entryX: " + entryX + "\n");
         int entryY = readTwoBytesToInt(inputStream);
-        System.out.print("entryY: " + entryY + "\n");
         int exitX = readTwoBytesToInt(inputStream);
-        System.out.print("exitX: " + exitX + "\n");
         int exitY = readTwoBytesToInt(inputStream);
-        System.out.print("exitY: " + exitY + "\n");
         int start = ((entryY/2)-1)*mazeData.getColumns() + (entryX/2) + 1;
         int end = ((exitY/2)-1)*mazeData.getColumns() + (exitX/2);
         mazeData.setStart(start);
         mazeData.setEnd(end);
-        System.out.print("start: " + start + "\nend: " + end + "\n");
     }
     
     private int readTwoBytesToInt(InputStream inputStream) throws IOException {
@@ -88,24 +81,15 @@ public class BinReader implements MazeReader{
     private void readMaze(InputStream inputStream, MazeData mazeData) throws IOException {
         inputStream.skip(12);
         int counter = readFourBytesToInt(inputStream);
-        System.out.print("counter: " + counter + "\n");
-        inputStream.skip(4);
-        int separator = inputStream.read();
-        int wall = inputStream.read();
-        int path = inputStream.read();
+        inputStream.skip(7);
         int value, count;
-           int subListMaxSize = mazeData.getColumns()*2+1;
-
-        System.out.print("separator: " + (char)separator + "\nwall: " +(char) wall + "\npath: " + (char)path);
         for(int i = 0; i <= counter; i++){   
             inputStream.read();
             value = inputStream.read();
             count = inputStream.read();
-            
             switch(value){
-                    case ' ' -> addToMazeCells(Cell.PATH, count, subListMaxSize);
-           
-                    case 'X' ->  addToMazeCells(Cell.WALL, count, subListMaxSize);
+                    case ' ' -> addToMazeCells(Cell.PATH, count);
+                    case 'X' ->  addToMazeCells(Cell.WALL, count);
             }
         }
         cells.add(subList);
@@ -113,18 +97,14 @@ public class BinReader implements MazeReader{
          System.out.print(cells.size());
     }
 
-    private void addToMazeCells(Cell value, int cellsToAdd, int subListMaxSize) {
-        
+    private void addToMazeCells(Cell value, int cellsToAdd) {
         while(cellsToAdd != -1){
             if(subList.size() < subListMaxSize){
-                 //System.out.print(value);
                 subList.add(value);
             }
             else {
-                 //System.out.print(subList.size() + " ");
                 cells.add(subList);
-                
-                 subList = new ArrayList<>();
+                subList = new ArrayList<>();
                 subList.add(value);
             }
             cellsToAdd--;

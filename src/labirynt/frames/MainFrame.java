@@ -248,9 +248,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
             
             case "bin" -> {
+                showMessage("Plik binarny <br>");
                 reader = new BinReader(file.getAbsolutePath());
                 readFile(reader);
-                showMessage("Plik binarny <br>");
             }
             default ->{
                 showMessage("Plik ma format nieobsługiwany: " + getFileExtension(fileName) + "<br>");
@@ -288,6 +288,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void setMazeLabels() {
         columnsLabel.setText("Kolumny: " + mazeData.getColumns());
         rowsLabel.setText("Wiersze: " + mazeData.getRows());
+        startLabel.setText("Start: " + mazeData.getStart());
+        endLabel.setText("End: " + mazeData.getEnd());
     }
     
     private void showMessage(String text){

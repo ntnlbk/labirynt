@@ -11,6 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import labirynt.MazeData;
 import labirynt.printers.MazePrint;
+import labirynt.readers.BinReader;
 import labirynt.readers.MazeReader;
 import labirynt.readers.TxtReader;
 
@@ -248,6 +249,8 @@ public class MainFrame extends javax.swing.JFrame {
             
             case "bin" -> {
                 showMessage("Plik binarny <br>");
+                reader = new BinReader(file.getAbsolutePath());
+                readFile(reader);
             }
             default ->{
                 showMessage("Plik ma format nieobsługiwany: " + getFileExtension(fileName) + "<br>");
@@ -285,6 +288,8 @@ public class MainFrame extends javax.swing.JFrame {
     private void setMazeLabels() {
         columnsLabel.setText("Kolumny: " + mazeData.getColumns());
         rowsLabel.setText("Wiersze: " + mazeData.getRows());
+        startLabel.setText("Start: " + mazeData.getStart());
+        endLabel.setText("End: " + mazeData.getEnd());
     }
     
     private void showMessage(String text){

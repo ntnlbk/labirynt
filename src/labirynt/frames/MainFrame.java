@@ -15,6 +15,9 @@ import labirynt.readers.BinReader;
 import labirynt.readers.MazeReader;
 import labirynt.readers.TxtReader;
 import java.awt.Toolkit;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  *
@@ -26,7 +29,7 @@ public class MainFrame extends javax.swing.JFrame {
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = (int) screenSize.width;
     private final int screenHeight = (int) screenSize.height;
-
+    private MazePrint mazePrint;
     /**
      * Creates new form MainFrame
      */
@@ -82,6 +85,11 @@ public class MainFrame extends javax.swing.JFrame {
         chooseStartButton.setMinimumSize(new java.awt.Dimension(252, 35));
         chooseStartButton.setPreferredSize(new java.awt.Dimension(252, 35));
         chooseStartButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chooseStartButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseStartButtonActionPerformed(evt);
+            }
+        });
         ToolBar.add(chooseStartButton);
 
         chooseEndButton.setBackground(new java.awt.Color(205, 242, 254));
@@ -94,6 +102,11 @@ public class MainFrame extends javax.swing.JFrame {
         chooseEndButton.setMinimumSize(new java.awt.Dimension(252, 35));
         chooseEndButton.setPreferredSize(new java.awt.Dimension(252, 35));
         chooseEndButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        chooseEndButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chooseEndButtonActionPerformed(evt);
+            }
+        });
         ToolBar.add(chooseEndButton);
         ToolBar.add(jSeparator);
 
@@ -143,6 +156,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane.setPreferredSize(new java.awt.Dimension(screenWidth * 18 / 100, screenHeight * 8 / 10));
+
+        messagePanel.setPreferredSize(new java.awt.Dimension(screenWidth * 18 / 100 , 32767));
 
         messageLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         messageLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -209,6 +224,24 @@ public class MainFrame extends javax.swing.JFrame {
     private void fileLoadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fileLoadButtonMouseClicked
         fileLoadBtnClicked();
     }//GEN-LAST:event_fileLoadButtonMouseClicked
+
+    private void chooseStartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseStartButtonActionPerformed
+        if (mazePrint == null){
+            showMessage("Nie wczytano jeszcze labiryntu<br>");
+        } else{
+            mazePrint.removeMouseListener(endPointMouseListener);
+            mazePrint.addMouseListener(startPointMouseListener);
+        }
+    }//GEN-LAST:event_chooseStartButtonActionPerformed
+
+    private void chooseEndButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseEndButtonActionPerformed
+        if (mazePrint == null){
+            showMessage("Nie wczytano jeszcze labiryntu<br>");
+        } else{
+            mazePrint.removeMouseListener(startPointMouseListener);
+            mazePrint.addMouseListener(endPointMouseListener);
+        }
+    }//GEN-LAST:event_chooseEndButtonActionPerformed
 
    
     /**
@@ -281,7 +314,7 @@ public class MainFrame extends javax.swing.JFrame {
        
     
     private void printMaze(){
-       MazePrint mazePrint = new MazePrint(mazeData);
+       mazePrint = new MazePrint(mazeData);
        int margin = 20;
        int maxMazeSize = (1024 * 2 + 1) * mazePrint.getSquareSize(); 
        mazePanel.removeAll();
@@ -304,5 +337,43 @@ public class MainFrame extends javax.swing.JFrame {
     private void showMessage(String text){
         String oldText = messageLabel.getText();
         messageLabel.setText(oldText + text);
+    }
+    
+    private final MouseListener startPointMouseListener = new MouseAdapter(){
+        @Override
+        public void mouseClicked(MouseEvent e){
+            setPoint(e, true);
+        }
+    };
+    
+    private final MouseListener endPointMouseListener = new MouseAdapter(){
+        @Override
+        public void mouseClicked(MouseEvent e){
+            setPoint(e, false);
+        }
+    };
+    
+    private void setPoint(MouseEvent e, Boolean ifStart){
+        int x = e.getX() / mazePrint.getSquareSize();
+        int y = e.getY()/ mazePrint.getSquareSize();
+        if (x % 2 == 0 || y % 2 == 0){
+            showMessage("Nie możesz wybrać punktu w tym miejscu <br>");
+            mazePrint.removeMouseListener(startPointMouseListener);
+            mazePrint.removeMouseListener(endPointMouseListener);
+        } else{
+            x/=2;
+            y/=2;
+            int node = mazeData.getColumns()*y + x;
+            if (ifStart == true){
+                showMessage("Wybrano punkt początkowy: "+ node + "<br>");
+                mazePrint.removeMouseListener(startPointMouseListener);
+                mazeData.setStart(node);
+            }else{
+                showMessage("Wybrano punkt końcowy: "+ node + "<br>");
+                mazePrint.removeMouseListener(endPointMouseListener);
+                mazeData.setEnd(node);
+            }
+            setMazeLabels();
+        }
     }
 }

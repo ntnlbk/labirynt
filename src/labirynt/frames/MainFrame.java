@@ -278,16 +278,17 @@ public class MainFrame extends javax.swing.JFrame {
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
-    
-   
+       
     
     private void printMaze(){
        MazePrint mazePrint = new MazePrint(mazeData);
+       int margin = 20;
+       int maxMazeSize = (1024 * 2 + 1) * mazePrint.getSquareSize(); 
        mazePanel.removeAll();
-       mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 20));
-       mazePrint.setPreferredSize(new Dimension(15000,15000));
+       mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, margin, margin));
+       mazePrint.setPreferredSize(new Dimension(maxMazeSize,maxMazeSize));
        JScrollPane scrollPane = new JScrollPane(mazePrint);
-       scrollPane.setPreferredSize(new Dimension(800,600));
+       scrollPane.setPreferredSize(new Dimension(screenWidth * 6 / 10 - 2 * margin, screenHeight * 8 / 10 - 2 * margin));
        mazePanel.add(scrollPane);
        mazePanel.revalidate();
        mazePanel.repaint();

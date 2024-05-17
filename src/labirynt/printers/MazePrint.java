@@ -27,6 +27,10 @@ public class MazePrint extends JPanel{
     
     private final MazeData mazeData;
     
+    public int getSquareSize(){
+        return SQUARE_SIZE;
+    }
+    
     public MazePrint(MazeData mazeData){
         this.mazeData = mazeData;
         this.cells=mazeData.getMazeCells();

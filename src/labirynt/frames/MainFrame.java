@@ -14,6 +14,7 @@ import labirynt.printers.MazePrint;
 import labirynt.readers.BinReader;
 import labirynt.readers.MazeReader;
 import labirynt.readers.TxtReader;
+import java.awt.Toolkit;
 
 /**
  *
@@ -22,6 +23,9 @@ import labirynt.readers.TxtReader;
 public class MainFrame extends javax.swing.JFrame {
     
     private final MazeData mazeData;
+    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private final int screenWidth = (int) screenSize.width;
+    private final int screenHeight = (int) screenSize.height;
 
     /**
      * Creates new form MainFrame
@@ -59,15 +63,17 @@ public class MainFrame extends javax.swing.JFrame {
         fileLoadButton = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(screenWidth , screenHeight - 50));
 
         ToolBar.setBackground(new java.awt.Color(255, 255, 255));
         ToolBar.setBorder(null);
         ToolBar.setOrientation(javax.swing.SwingConstants.VERTICAL);
         ToolBar.setRollover(true);
         ToolBar.setMargin(new java.awt.Insets(4, 4, 4, 4));
+        ToolBar.setPreferredSize(new java.awt.Dimension(screenWidth * 18 / 100, screenHeight * 8 / 10));
 
         chooseStartButton.setBackground(new java.awt.Color(205, 242, 254));
-        chooseStartButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        chooseStartButton.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         chooseStartButton.setText("Wybierz punkt początkowy");
         chooseStartButton.setFocusable(false);
         chooseStartButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -79,7 +85,7 @@ public class MainFrame extends javax.swing.JFrame {
         ToolBar.add(chooseStartButton);
 
         chooseEndButton.setBackground(new java.awt.Color(205, 242, 254));
-        chooseEndButton.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        chooseEndButton.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         chooseEndButton.setText("Wybierz punkt końcowy");
         chooseEndButton.setFocusable(false);
         chooseEndButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -100,41 +106,43 @@ public class MainFrame extends javax.swing.JFrame {
         ToolBar.add(findPathButton);
         ToolBar.add(jSeparator1);
 
-        rowsLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        rowsLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         rowsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rowsLabel.setText("Wiersze: 0");
         ToolBar.add(rowsLabel);
 
-        columnsLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        columnsLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         columnsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         columnsLabel.setText("Kolumny: 0");
         ToolBar.add(columnsLabel);
 
-        startLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        startLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         startLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         startLabel.setText("Start: 0");
         ToolBar.add(startLabel);
 
-        endLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        endLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         endLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         endLabel.setText("Koniec: 0");
         ToolBar.add(endLabel);
 
         mazePanel.setBackground(new java.awt.Color(255, 255, 255));
-        mazePanel.setPreferredSize(new java.awt.Dimension(1200, 1080));
+        Dimension mazePanelSize = new java.awt.Dimension(screenWidth * 6 / 10 ,screenHeight * 8 / 10);
+        mazePanel.setPreferredSize(mazePanelSize);
 
         javax.swing.GroupLayout mazePanelLayout = new javax.swing.GroupLayout(mazePanel);
         mazePanel.setLayout(mazePanelLayout);
         mazePanelLayout.setHorizontalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGap(0, 10, Short.MAX_VALUE)
         );
         mazePanelLayout.setVerticalGroup(
             mazePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 5000, Short.MAX_VALUE)
+            .addGap(0, 10, Short.MAX_VALUE)
         );
 
         jScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        jScrollPane.setPreferredSize(new java.awt.Dimension(screenWidth * 18 / 100, screenHeight * 8 / 10));
 
         messageLabel.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         messageLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -177,22 +185,22 @@ public class MainFrame extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(4843, Short.MAX_VALUE))
+                .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(5763, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, 5000, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 5120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 686, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(1073, Short.MAX_VALUE))
+                    .addComponent(mazePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(1073, 1073, 1073))
         );
 
         pack();

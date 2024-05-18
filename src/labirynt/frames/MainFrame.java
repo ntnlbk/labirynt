@@ -368,18 +368,24 @@ public class MainFrame extends javax.swing.JFrame {
             x/=2;
             y/=2;
             int node = mazeData.getColumns()*y + x;
-            if (ifStart == true){
-                updateStartCell(y, x);
-                showMessage("Wybrano punkt początkowy: "+ node + "<br>");
-                mazePrint.removeMouseListener(startPointMouseListener);
-                mazeData.setStart(node);
-            }else{
-                updateEndCell(y, x);
-                showMessage("Wybrano punkt końcowy: "+ node + "<br>");
-                mazePrint.removeMouseListener(endPointMouseListener);
-                mazeData.setEnd(node);
-            }
+            if(node == mazeData.getStart() || node == mazeData.getEnd())
+                showMessage("Nie możesz wybrać punktu w tym miejscu <br>");
+            else{
+                if (ifStart == true){
+                   updateStartCell(y, x);
+                   showMessage("Wybrano punkt początkowy: "+ node + "<br>");
+                   mazePrint.removeMouseListener(startPointMouseListener);
+                   mazeData.setStart(node);
+               }else{
+                   updateEndCell(y, x);
+                   showMessage("Wybrano punkt końcowy: "+ node + "<br>");
+                   mazePrint.removeMouseListener(endPointMouseListener);
+                   mazeData.setEnd(node);
+               }
             setMazeLabels();
+                
+            }
+           
         }
     }
 

@@ -20,7 +20,8 @@ public class MazePrint extends JPanel{
     private final int SQUARE_SIZE = 10;
     
     private final Color WALL_COLOR = Color.BLACK;
-    
+    private final Color START_COLOR = Color.ORANGE;
+    private final Color END_COLOR = Color.RED;
     private final Color PATH_COLOR = Color.WHITE;
     
     private final List<List<Cell>> cells;
@@ -51,6 +52,8 @@ public class MazePrint extends JPanel{
                     Cell cell = rowCells.get(col);
                     switch (cell){
                         case WALL -> g.setColor(WALL_COLOR);
+                        case START -> g.setColor(START_COLOR);
+                        case END -> g.setColor(END_COLOR);
                         default -> g.setColor(PATH_COLOR);
                     }
                     g.fillRect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);

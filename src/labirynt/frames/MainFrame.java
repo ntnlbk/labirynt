@@ -18,6 +18,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.List;
+import labirynt.Cell;
 
 /**
  *
@@ -168,7 +170,7 @@ public class MainFrame extends javax.swing.JFrame {
             messagePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(messagePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+                .addComponent(messageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         messagePanelLayout.setVerticalGroup(
@@ -176,7 +178,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(messagePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(messageLabel)
-                .addContainerGap(678, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jScrollPane.setViewportView(messagePanel);
@@ -230,6 +232,7 @@ public class MainFrame extends javax.swing.JFrame {
             showMessage("Nie wczytano jeszcze labiryntu<br>");
         } else{
             mazePrint.removeMouseListener(endPointMouseListener);
+            mazePrint.removeMouseListener(startPointMouseListener);
             mazePrint.addMouseListener(startPointMouseListener);
         }
     }//GEN-LAST:event_chooseStartButtonActionPerformed
@@ -238,6 +241,7 @@ public class MainFrame extends javax.swing.JFrame {
         if (mazePrint == null){
             showMessage("Nie wczytano jeszcze labiryntu<br>");
         } else{
+            mazePrint.removeMouseListener(endPointMouseListener);
             mazePrint.removeMouseListener(startPointMouseListener);
             mazePrint.addMouseListener(endPointMouseListener);
         }
@@ -365,15 +369,41 @@ public class MainFrame extends javax.swing.JFrame {
             y/=2;
             int node = mazeData.getColumns()*y + x;
             if (ifStart == true){
+                updateStartCell(y, x);
                 showMessage("Wybrano punkt początkowy: "+ node + "<br>");
                 mazePrint.removeMouseListener(startPointMouseListener);
                 mazeData.setStart(node);
             }else{
+                updateEndCell(y, x);
                 showMessage("Wybrano punkt końcowy: "+ node + "<br>");
                 mazePrint.removeMouseListener(endPointMouseListener);
                 mazeData.setEnd(node);
             }
             setMazeLabels();
         }
+    }
+
+    private void updateStartCell(int y, int x) {
+        int oldX, oldY;
+        int oldStart= mazeData.getStart();
+        oldY = oldStart/mazeData.getColumns();
+        oldX = oldStart -oldY*mazeData.getColumns();
+        List<List<Cell>> cells = mazeData.getMazeCells();
+        cells.get(oldY*2+1).set(oldX*2+1, Cell.PATH);
+        cells.get(y*2+1).set(x*2+1, Cell.START);
+        mazeData.setMazeCells(cells);
+        printMaze();
+    }
+    
+    private void updateEndCell(int y, int x) {
+        int oldX, oldY;
+        int oldEnd= mazeData.getEnd();
+        oldY = oldEnd/mazeData.getColumns();
+        oldX = oldEnd -oldY*mazeData.getColumns();
+        List<List<Cell>> cells = mazeData.getMazeCells();
+        cells.get(oldY*2+1).set(oldX*2+1, Cell.PATH);
+        cells.get(y*2+1).set(x*2+1, Cell.END);
+        mazeData.setMazeCells(cells);
+        printMaze();
     }
 }

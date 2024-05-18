@@ -38,6 +38,8 @@ public class BinReader implements MazeReader{
             readRowsAndColumns(inputStream, mazeData) ;
             readEntryAndExit(inputStream, mazeData);
             readMaze(inputStream, mazeData);
+            updateStartCell(mazeData);
+            updateEndCell(mazeData);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(BinReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -63,8 +65,8 @@ public class BinReader implements MazeReader{
         int entryY = readTwoBytesToInt(inputStream);
         int exitX = readTwoBytesToInt(inputStream);
         int exitY = readTwoBytesToInt(inputStream);
-        int start = ((entryY/2)-1)*mazeData.getColumns() + (entryX/2) + 1;
-        int end = ((exitY/2)-1)*mazeData.getColumns() + (exitX/2);
+        int start = ((entryY/2)-1)*mazeData.getColumns() + (entryX/2);
+        int end = ((exitY/2)-1)*mazeData.getColumns() + (exitX/2)-1;
         mazeData.setStart(start);
         mazeData.setEnd(end);
     }
@@ -109,5 +111,25 @@ public class BinReader implements MazeReader{
             }
             cellsToAdd--;
         }
+    }
+    
+    private void updateStartCell(MazeData mazeData) {
+        int oldStart= mazeData.getStart();
+        int oldY = oldStart/mazeData.getColumns();
+        int oldX = oldStart -oldY*mazeData.getColumns();
+        List<List<Cell>> cellsFromData = mazeData.getMazeCells();
+        cellsFromData.get(oldY*2+1).set(oldX*2+1, Cell.START);
+        cellsFromData.get(oldY*2+1).set(oldX*20, Cell.WALL);
+        mazeData.setMazeCells(cellsFromData);
+    }
+    
+    private void updateEndCell(MazeData mazeData) {
+        int oldEnd= mazeData.getEnd();
+        int oldY = oldEnd/mazeData.getColumns();
+        int oldX = oldEnd -oldY*mazeData.getColumns();
+        List<List<Cell>> cellsFromData = mazeData.getMazeCells();
+        cellsFromData.get(oldY*2+1).set(oldX*2+1, Cell.END);
+        cellsFromData.get(oldY*2+1).set(oldX*2+2, Cell.WALL);
+        mazeData.setMazeCells(cellsFromData);
     }
 }

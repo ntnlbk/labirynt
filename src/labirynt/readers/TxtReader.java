@@ -26,20 +26,42 @@ public class TxtReader implements MazeReader {
     @Override
     public void readFromFile(MazeData mazeData) {
         ArrayList<ArrayList<Cell>> cells = new ArrayList();
+        int columns = 0;
         try(FileInputStream fin=new FileInputStream(filePath))
         {    
             int i;
+            boolean nextIsStart = false;
             ArrayList<Cell> subList = new ArrayList<>() ; 
             while((i=fin.read())!=-1){
                 switch(i){
                     case '\n' -> {
                         cells.add(subList);
+                        columns = subList.size()/2;
                         subList = new ArrayList<>();
                     }
-                    case ' ' -> subList.add(Cell.PATH);
+                    case ' ' -> {
+                        if(nextIsStart){
+                            subList.add(Cell.START);
+                            nextIsStart = false;
+                        }
+                        else
+                            subList.add(Cell.PATH);
+                    }
                     case 'X' -> subList.add(Cell.WALL);
-                    case 'P' -> subList.add(Cell.START);
-                    case 'K' -> subList.add(Cell.END);
+                    case 'P' -> {
+                        int node = columns * ((cells.size()+1)/2 - 1)  + subList.size()/2;
+                        subList.add(Cell.WALL);
+                        mazeData.setStart(node);
+                        nextIsStart = true;
+                        
+                        }
+                    case 'K' -> {
+                        int node = columns * ((cells.size()+1)/2 - 1)  + subList.size()/2 - 1;
+                        mazeData.setEnd(node);
+                        subList.add(Cell.WALL);
+                        subList.set(subList.size()-2, Cell.END);
+                        
+                    }
                 }
                 
             } 
@@ -56,5 +78,7 @@ public class TxtReader implements MazeReader {
     
     
     }
+    
+    
     
 }

@@ -7,7 +7,6 @@ package labirynt.readers;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import labirynt.AdjacencyMatrix;
 import labirynt.Cell;
@@ -91,9 +90,6 @@ public class TxtReader implements MazeReader {
            
             System.out.println(ex.getMessage());
         }
-       
-    
-    
     }
 
     private int countNode(int columns, ArrayList<ArrayList<Cell>> cells, ArrayList<Cell> subList) {

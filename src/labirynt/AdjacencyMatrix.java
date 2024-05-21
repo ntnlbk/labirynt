@@ -65,7 +65,14 @@ public class AdjacencyMatrix {
         if(actualPaths[RIGHT_PATH]){
             nodes.add(current + 1);
         }
-        return nodes.stream().mapToInt(i -> i).toArray();
+        if(!nodes.isEmpty())
+            return nodes.stream().mapToInt(i -> i).toArray();
+        else
+        {
+            int[] emptyArray = {};
+            return emptyArray;
+        }
+            
     }
     
     private void changePathToTrue(int indexToChange, int from){

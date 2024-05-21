@@ -8,9 +8,6 @@ package labirynt;
  *
  * @author Anton
  */
-public enum Path {
-    TOP,
-    BOTTOM,
-    LEFT,
-    RIGHT
+public class MazeSolver {
+    
 }

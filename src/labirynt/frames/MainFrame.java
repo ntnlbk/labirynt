@@ -308,7 +308,7 @@ public class MainFrame extends javax.swing.JFrame {
         reader.readFromFile(mazeData);
         showMessage("Wczytano labirynt: " + mazeData.getColumns() + "x" + mazeData.getRows() + "<br>");
         printMaze();
-        setMazeLabels();  
+        setMazeLabels();
     }
     
     private static String getFileExtension(String fileName) {

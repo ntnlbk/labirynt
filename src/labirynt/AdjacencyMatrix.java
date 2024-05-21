@@ -5,6 +5,7 @@
 package labirynt;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
@@ -17,36 +18,28 @@ public class AdjacencyMatrix {
     private final int LEFT_PATH = 1;
     private final int RIGHT_PATH = 3;
     
-    private final boolean paths[] = {false, false, false, false}; 
+    private int columns;
     
-    private final int columns;
-    
-    private final int rows;
-    
-    private final ArrayList<boolean[]> matrix = new ArrayList<>();
+    private final HashMap<Integer, boolean[]> matrix = new HashMap<>();
 
-    public AdjacencyMatrix(int columns, int rows) {
-        int size = rows * columns;
-        this.rows = rows;
+    public void setColumns(int columns) {
         this.columns = columns;
-        for(int i = 0; i < size; i++){
-            matrix.add(paths);
-        }
     }
     
-    public void addPath(int from, Path path){
+    
+    public void addPath(int from, Passage path){
         int indexToChange;
         switch(path){
-            case Path.BOTTOM -> {
+            case Passage.BOTTOM -> {
                  indexToChange= BOTTOM_PATH;
             }
-            case Path.LEFT -> {
+            case Passage.LEFT -> {
                 indexToChange= LEFT_PATH;
             }
-            case Path.TOP -> {
+            case Passage.TOP -> {
                 indexToChange= TOP_PATH;
             }
-            case Path.RIGHT -> {
+            case Passage.RIGHT -> {
                 indexToChange= RIGHT_PATH;
             }
             default-> {
@@ -57,7 +50,8 @@ public class AdjacencyMatrix {
     }
     
     public int[] getNodesConnectedWitchCurrent(int current){
-        boolean[] actualPaths = matrix.get(current);
+        final boolean defaultPaths[] = {false, false, false, false}; 
+        boolean[] actualPaths =matrix.getOrDefault(current, defaultPaths);
         ArrayList<Integer> nodes = new ArrayList<>();
         if(actualPaths[BOTTOM_PATH]){
             nodes.add(current + columns);
@@ -75,9 +69,11 @@ public class AdjacencyMatrix {
     }
     
     private void changePathToTrue(int indexToChange, int from){
-        boolean newPaths[] = matrix.get(from);
+        final boolean defaultPaths[] = {false, false, false, false}; 
+        boolean newPaths[] = matrix.getOrDefault(from, defaultPaths);
         newPaths[indexToChange] = true;
-        matrix.set(from, newPaths);
+        matrix.remove(from);
+        matrix.put(from, newPaths);
     }
    
 }

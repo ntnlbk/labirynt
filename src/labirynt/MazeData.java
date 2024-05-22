@@ -29,6 +29,10 @@ public class MazeData {
     public void setColumns(int columns) {
         this.columns = columns;
     }
+    
+    public int getNumberOfNodes() {
+        return rows*columns;
+    }
 
     public int getStart() {
         return start;

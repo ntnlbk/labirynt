@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import labirynt.Cell;
+import labirynt.MazeSolver;
 
 /**
  *
@@ -118,6 +119,11 @@ public class MainFrame extends javax.swing.JFrame {
         findPathButton.setFocusable(false);
         findPathButton.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         findPathButton.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        findPathButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findPathButtonActionPerformed(evt);
+            }
+        });
         ToolBar.add(findPathButton);
         ToolBar.add(jSeparator1);
 
@@ -247,6 +253,12 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chooseEndButtonActionPerformed
 
+    private void findPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findPathButtonActionPerformed
+        MazeSolver mazeSolver = new MazeSolver(mazeData);
+        System.out.println(mazeSolver.getPath());
+        
+    }//GEN-LAST:event_findPathButtonActionPerformed
+
    
     /**
      * @param args the command line arguments
@@ -329,6 +341,7 @@ public class MainFrame extends javax.swing.JFrame {
        mazePanel.add(scrollPane);
        mazePanel.revalidate();
        mazePanel.repaint();
+       
     }
 
     private void setMazeLabels() {

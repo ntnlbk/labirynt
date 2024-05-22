@@ -256,7 +256,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void findPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findPathButtonActionPerformed
         MazeSolver mazeSolver = new MazeSolver(mazeData);
         System.out.println(mazeSolver.getPath());
-        
+        mazePanel.repaint();
     }//GEN-LAST:event_findPathButtonActionPerformed
 
    

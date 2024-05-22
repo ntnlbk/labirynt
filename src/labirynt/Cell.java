@@ -12,5 +12,6 @@ public enum Cell {
     START,
     PATH,
     WALL,
-    END
+    END,
+    PASSAGE
 }

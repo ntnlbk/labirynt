@@ -23,6 +23,7 @@ public class MazePrint extends JPanel{
     private final Color START_COLOR = Color.ORANGE;
     private final Color END_COLOR = Color.RED;
     private final Color PATH_COLOR = Color.WHITE;
+    private final Color PASSAGE_COLOR = Color.GREEN;
     
     private final List<List<Cell>> cells;
     
@@ -52,6 +53,7 @@ public class MazePrint extends JPanel{
                     Cell cell = rowCells.get(col);
                     switch (cell){
                         case WALL -> g.setColor(WALL_COLOR);
+                        case PASSAGE -> g.setColor(PASSAGE_COLOR);
                         case START -> g.setColor(START_COLOR);
                         case END -> g.setColor(END_COLOR);
                         default -> g.setColor(PATH_COLOR);

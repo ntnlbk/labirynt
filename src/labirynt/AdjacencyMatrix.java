@@ -57,7 +57,8 @@ public class AdjacencyMatrix {
             nodes.add(current + columns);
         }
         if(actualPaths[LEFT_PATH]){
-            nodes.add(current - 1);
+            if(current != 0)
+                nodes.add(current - 1);
         } 
         if(actualPaths[TOP_PATH]){
             nodes.add(current - columns);

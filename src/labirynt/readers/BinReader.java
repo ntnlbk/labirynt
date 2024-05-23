@@ -28,6 +28,7 @@ public class BinReader implements MazeReader{
     private ArrayList<Cell> subList = new ArrayList<>() ; 
     private final  ArrayList<ArrayList<Cell>> cells = new ArrayList();
     private int columns;
+    private int rows;
     private int subListMaxSize;
     public BinReader(String filePath){
         this.filePath = filePath;
@@ -59,7 +60,7 @@ public class BinReader implements MazeReader{
         columns = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setColumns(columns);
         matrix.setColumns(columns);
-        int rows = (readTwoBytesToInt(inputStream)-1)/2 ;
+        rows = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setRows(rows);
         subListMaxSize = mazeData.getColumns()*2+1;
     }
@@ -119,14 +120,14 @@ public class BinReader implements MazeReader{
             if(value == Cell.PATH){
                 if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
                     int node = countNode(columns, cells, subList);
-                    matrix.addPath(node+1, Passage.LEFT);
-                    matrix.addPath(node, Passage.RIGHT);
+                        matrix.addPath(node+1, Passage.LEFT);
+                        matrix.addPath(node, Passage.RIGHT);
                 } 
                 if (cells.size() % 2 == 0 && subList.size() % 2 == 0 && !cells.isEmpty() && !subList.isEmpty()){
                     matrix.addPath(countNode(columns, cells, subList), Passage.BOTTOM);
                     matrix.addPath(countNode(columns, cells, subList)+columns, Passage.TOP);
+                    }
                 }
-            }
             cellsToAdd--;
         }
     }

@@ -33,6 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
     private final int screenWidth = (int) screenSize.width;
     private final int screenHeight = (int) screenSize.height;
     private MazePrint mazePrint;
+    private MazeSolver mazeSolver;
     /**
      * Creates new form MainFrame
      */
@@ -254,9 +255,18 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseEndButtonActionPerformed
 
     private void findPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findPathButtonActionPerformed
-        MazeSolver mazeSolver = new MazeSolver(mazeData);
-        System.out.println(mazeSolver.getPath());
-        mazePanel.repaint();
+        if (mazeSolver == null || !mazeSolver.isPath){
+            mazeSolver = new MazeSolver(mazeData);
+            mazeSolver.getPath();
+            findPathButton.setText("Schowaj ścieżkę");
+            mazePanel.repaint();
+        }
+        else {
+            mazeSolver.isPath = false;
+            mazeSolver.cellsResetPath();
+            findPathButton.setText("Znajdź ścieżkę");
+            mazePanel.repaint();
+        }
     }//GEN-LAST:event_findPathButtonActionPerformed
 
    

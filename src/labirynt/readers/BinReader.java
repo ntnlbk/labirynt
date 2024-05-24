@@ -121,7 +121,8 @@ public class BinReader implements MazeReader{
                 if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
                     int node = countNode(columns, cells, subList);
                         matrix.addPath(node+1, Passage.LEFT);
-                        matrix.addPath(node, Passage.RIGHT);
+                        if(node != rows * columns - 1)
+                            matrix.addPath(node, Passage.RIGHT);
                 } 
                 if (cells.size() % 2 == 0 && subList.size() % 2 == 0 && !cells.isEmpty() && !subList.isEmpty()){
                     matrix.addPath(countNode(columns, cells, subList), Passage.BOTTOM);

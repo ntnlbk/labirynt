@@ -29,6 +29,10 @@ public class MazeData {
     public void setColumns(int columns) {
         this.columns = columns;
     }
+    
+    public int getNumberOfNodes() {
+        return rows*columns;
+    }
 
     public int getStart() {
         return start;
@@ -54,20 +58,19 @@ public class MazeData {
         this.mazeCells = mazeCells;
     }
 
-    public int[][] getAdjacencyMatrix() {
+    public AdjacencyMatrix getAdjacencyMatrix() {
         return adjacencyMatrix;
     }
 
-    public void setAdjacencyMatrix(int[][] adjacencyMatrix) {
+    public void setAdjacencyMatrix(AdjacencyMatrix adjacencyMatrix) {
         this.adjacencyMatrix = adjacencyMatrix;
     }
     private int columns;
     private int start;
     private int end;
     
-    //dla rysowania
     private List<List<Cell>> mazeCells;
-    //dla rozwiązania
-    private int[][] adjacencyMatrix;
+    
+    private AdjacencyMatrix adjacencyMatrix;
     
 }

@@ -8,14 +8,16 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import labirynt.AdjacencyMatrix;
 import labirynt.Cell;
 import labirynt.MazeData;
+import labirynt.Passage;
 
 /**
  *
  * @author Anton
  */
-public class TxtReader implements MazeReader {
+public class TxtReader {
     
     private final String filePath;
     
@@ -23,9 +25,11 @@ public class TxtReader implements MazeReader {
         this.filePath = filePath;
     }
 
-    @Override
+    
     public void readFromFile(MazeData mazeData) {
         ArrayList<ArrayList<Cell>> cells = new ArrayList();
+        mazeData.setAdjacencyMatrix(null);
+        AdjacencyMatrix matrix = new AdjacencyMatrix();
         int columns = 0;
         try(FileInputStream fin=new FileInputStream(filePath))
         {    
@@ -35,8 +39,11 @@ public class TxtReader implements MazeReader {
             while((i=fin.read())!=-1){
                 switch(i){
                     case '\n' -> {
+                        if (cells.isEmpty()){
+                            columns = subList.size()/2;
+                            matrix.setColumns(columns);
+                        }
                         cells.add(subList);
-                        columns = subList.size()/2;
                         subList = new ArrayList<>();
                     }
                     case ' ' -> {
@@ -46,6 +53,16 @@ public class TxtReader implements MazeReader {
                         }
                         else
                             subList.add(Cell.PATH);
+                        if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
+                            int node = countNode(columns, cells, subList);
+                            matrix.addPath(node+1, Passage.LEFT);
+                            matrix.addPath(node, Passage.RIGHT);
+                        } 
+                        if (cells.size() % 2 == 0 && subList.size() % 2 == 0 && !cells.isEmpty() && !subList.isEmpty()){
+                            matrix.addPath(countNode(columns, cells, subList), Passage.BOTTOM);
+                            matrix.addPath(countNode(columns, cells, subList)+columns, Passage.TOP);
+                        }
+                        
                     }
                     case 'X' -> subList.add(Cell.WALL);
                     case 'P' -> {
@@ -60,23 +77,24 @@ public class TxtReader implements MazeReader {
                         mazeData.setEnd(node);
                         subList.add(Cell.WALL);
                         subList.set(subList.size()-2, Cell.END);
-                        
                     }
                 }
-                
             } 
             mazeData.setMazeCells((List)cells);
             mazeData.setColumns((cells.get(0).size() - 1) / 2);
             mazeData.setRows((cells.size() - 1) / 2);
+            mazeData.setAdjacencyMatrix(matrix);
             fin.close();
         }
         catch(IOException ex){
            
             System.out.println(ex.getMessage());
         }
-       
-    
-    
+    }
+
+    private int countNode(int columns, ArrayList<ArrayList<Cell>> cells, ArrayList<Cell> subList) {
+        int node = columns * ((cells.size()+1)/2 - 1)  + subList.size()/2;
+        return node-1;
     }
     
     

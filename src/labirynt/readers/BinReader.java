@@ -12,34 +12,41 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import labirynt.AdjacencyMatrix;
 import labirynt.Cell;
 import labirynt.MazeData;
+import labirynt.Passage;
 
 /**
  *
  * @author Anton
  */
-public class BinReader implements MazeReader{
+public class BinReader{
     
     private final String filePath;
+    private AdjacencyMatrix matrix;
     private ArrayList<Cell> subList = new ArrayList<>() ; 
     private final  ArrayList<ArrayList<Cell>> cells = new ArrayList();
+    private int columns;
+    private int rows;
     private int subListMaxSize;
     public BinReader(String filePath){
         this.filePath = filePath;
        
     }
 
-    @Override
     public void readFromFile(MazeData mazeData) {
         try {
             InputStream inputStream = new FileInputStream(filePath);
-            readFileId(inputStream) ;
+            mazeData.setAdjacencyMatrix(null);
+            matrix = new AdjacencyMatrix();
+            readFileId(inputStream);
             readRowsAndColumns(inputStream, mazeData) ;
             readEntryAndExit(inputStream, mazeData);
             readMaze(inputStream, mazeData);
             updateStartCell(mazeData);
             updateEndCell(mazeData);
+            mazeData.setAdjacencyMatrix(matrix);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(BinReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -49,9 +56,10 @@ public class BinReader implements MazeReader{
     }
 
     private void readRowsAndColumns(InputStream inputStream, MazeData mazeData) throws IOException {
-        int columns = (readTwoBytesToInt(inputStream)-1)/2 ;
+        columns = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setColumns(columns);
-        int rows = (readTwoBytesToInt(inputStream)-1)/2 ;
+        matrix.setColumns(columns);
+        rows = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setRows(rows);
         subListMaxSize = mazeData.getColumns()*2+1;
     }
@@ -96,7 +104,6 @@ public class BinReader implements MazeReader{
         }
         cells.add(subList);
         mazeData.setMazeCells((List)cells);
-         System.out.print(cells.size());
     }
 
     private void addToMazeCells(Cell value, int cellsToAdd) {
@@ -109,6 +116,18 @@ public class BinReader implements MazeReader{
                 subList = new ArrayList<>();
                 subList.add(value);
             }
+            if(value == Cell.PATH){
+                if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
+                    int node = countNode(columns, cells, subList);
+                        matrix.addPath(node+1, Passage.LEFT);
+                        if(node != rows * columns - 1)
+                            matrix.addPath(node, Passage.RIGHT);
+                } 
+                if (cells.size() % 2 == 0 && subList.size() % 2 == 0 && !cells.isEmpty() && !subList.isEmpty()){
+                    matrix.addPath(countNode(columns, cells, subList), Passage.BOTTOM);
+                    matrix.addPath(countNode(columns, cells, subList)+columns, Passage.TOP);
+                    }
+                }
             cellsToAdd--;
         }
     }
@@ -131,5 +150,9 @@ public class BinReader implements MazeReader{
         cellsFromData.get(oldY*2+1).set(oldX*2+1, Cell.END);
         cellsFromData.get(oldY*2+1).set(oldX*2+2, Cell.WALL);
         mazeData.setMazeCells(cellsFromData);
+    }
+    private int countNode(int columns, ArrayList<ArrayList<Cell>> cells, ArrayList<Cell> subList) {
+        int node = columns * ((cells.size()+1)/2 - 1)  + subList.size()/2;
+        return node-1;
     }
 }

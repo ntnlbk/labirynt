@@ -8,10 +8,9 @@ package labirynt;
  *
  * @author Anton
  */
-public enum Cell {
-    START,
-    PATH,
-    WALL,
-    END,
-    PASSAGE
+public enum Passage {
+    TOP,
+    BOTTOM,
+    LEFT,
+    RIGHT
 }

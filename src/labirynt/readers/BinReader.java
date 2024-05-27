@@ -21,7 +21,7 @@ import labirynt.Passage;
  *
  * @author Anton
  */
-public class BinReader implements MazeReader{
+public class BinReader{
     
     private final String filePath;
     private AdjacencyMatrix matrix;
@@ -35,7 +35,6 @@ public class BinReader implements MazeReader{
        
     }
 
-    @Override
     public void readFromFile(MazeData mazeData) {
         try {
             InputStream inputStream = new FileInputStream(filePath);

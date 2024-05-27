@@ -11,9 +11,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JScrollPane;
 import labirynt.MazeData;
 import labirynt.printers.MazePrint;
-import labirynt.readers.BinReader;
 import labirynt.readers.MazeReader;
-import labirynt.readers.TxtReader;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,19 +25,20 @@ import labirynt.MazeSolver;
  * @author Anton
  */
 public class MainFrame extends javax.swing.JFrame {
-    
+
     private final MazeData mazeData;
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = (int) screenSize.width;
     private final int screenHeight = (int) screenSize.height;
     private MazePrint mazePrint;
     private MazeSolver mazeSolver;
+
     /**
      * Creates new form MainFrame
      */
     public MainFrame() {
         initComponents();
-        mazeData = new MazeData(); 
+        mazeData = new MazeData();
         messageLabel.setText("<html>");
     }
 
@@ -235,9 +234,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_fileLoadButtonMouseClicked
 
     private void chooseStartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseStartButtonActionPerformed
-        if (mazePrint == null){
+        if (mazePrint == null) {
             showMessage("Nie wczytano jeszcze labiryntu<br>");
-        } else{
+        } else {
             mazePrint.removeMouseListener(endPointMouseListener);
             mazePrint.removeMouseListener(startPointMouseListener);
             mazePrint.addMouseListener(startPointMouseListener);
@@ -245,9 +244,9 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseStartButtonActionPerformed
 
     private void chooseEndButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chooseEndButtonActionPerformed
-        if (mazePrint == null){
+        if (mazePrint == null) {
             showMessage("Nie wczytano jeszcze labiryntu<br>");
-        } else{
+        } else {
             mazePrint.removeMouseListener(endPointMouseListener);
             mazePrint.removeMouseListener(startPointMouseListener);
             mazePrint.addMouseListener(endPointMouseListener);
@@ -255,13 +254,12 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseEndButtonActionPerformed
 
     private void findPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findPathButtonActionPerformed
-        if (mazeSolver == null || !mazeSolver.isPath){
+        if (mazeSolver == null || !mazeSolver.isPath) {
             mazeSolver = new MazeSolver(mazeData);
             mazeSolver.getPath();
             findPathButton.setText("Schowaj ścieżkę");
             mazePanel.repaint();
-        }
-        else {
+        } else {
             mazeSolver.isPath = false;
             mazeSolver.cellsResetPath();
             findPathButton.setText("Znajdź ścieżkę");
@@ -269,11 +267,9 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_findPathButtonActionPerformed
 
-   
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToolBar ToolBar;
@@ -298,60 +294,33 @@ public class MainFrame extends javax.swing.JFrame {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showOpenDialog(MainFrame.this);
         File file = fileChooser.getSelectedFile();
-        if (file != null){
+        if (file != null) {
             showMessage("Wybrano plik: <br>" + file.getName() + "<br>");
-            parseFile(file);    
+            readFile(file);
         }
     }
-    
-    private void parseFile(File file) {
-        MazeReader reader;
-        String fileName = file.getName();
-        switch (getFileExtension(fileName)){
-            case "txt" -> {
-                showMessage("Plik tekstowy <br>");
-                reader = new TxtReader(file.getAbsolutePath());
-                readFile(reader);
-            }
-            
-            case "bin" -> {
-                showMessage("Plik binarny <br>");
-                reader = new BinReader(file.getAbsolutePath());
-                readFile(reader);
-            }
-            default ->{
-                showMessage("Plik ma format nieobsługiwany: " + getFileExtension(fileName) + "<br>");
-            }
-        }
-        
-    }
-    
-    private void readFile(MazeReader reader){
-        reader.readFromFile(mazeData);
+
+    private void readFile(File file) {
+        MazeReader reader = new MazeReader(file, mazeData, this);
+        reader.readFile();
         showMessage("Wczytano labirynt: " + mazeData.getColumns() + "x" + mazeData.getRows() + "<br>");
         printMaze();
         setMazeLabels();
     }
-    
-    private static String getFileExtension(String fileName) {
-        int dotIndex = fileName.lastIndexOf('.');
-        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
-    }
-       
-    
-    private void printMaze(){
-       mazePrint = new MazePrint(mazeData);
-       int margin = 20;
-       int maxMazeSize = (1024 * 2 + 1) * mazePrint.getSquareSize(); 
-       mazePanel.removeAll();
-       mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, margin, margin));
-       mazePrint.setPreferredSize(new Dimension(maxMazeSize,maxMazeSize));
-       JScrollPane scrollPane = new JScrollPane(mazePrint);
-       scrollPane.setPreferredSize(new Dimension(screenWidth * 6 / 10 - 2 * margin, screenHeight * 8 / 10 - 2 * margin));
-       mazePanel.add(scrollPane);
-       mazePanel.revalidate();
-       mazePanel.repaint();
-       
+
+    private void printMaze() {
+        mazePrint = new MazePrint(mazeData);
+        int margin = 20;
+        int maxMazeSize = (1024 * 2 + 1) * mazePrint.getSquareSize();
+        mazePanel.removeAll();
+        mazePanel.setLayout(new FlowLayout(FlowLayout.LEFT, margin, margin));
+        mazePrint.setPreferredSize(new Dimension(maxMazeSize, maxMazeSize));
+        JScrollPane scrollPane = new JScrollPane(mazePrint);
+        scrollPane.setPreferredSize(new Dimension(screenWidth * 6 / 10 - 2 * margin, screenHeight * 8 / 10 - 2 * margin));
+        mazePanel.add(scrollPane);
+        mazePanel.revalidate();
+        mazePanel.repaint();
+
     }
 
     private void setMazeLabels() {
@@ -360,78 +329,78 @@ public class MainFrame extends javax.swing.JFrame {
         startLabel.setText("Start: " + mazeData.getStart());
         endLabel.setText("End: " + mazeData.getEnd());
     }
-    
-    private void showMessage(String text){
+
+    public void showMessage(String text) {
         String oldText = messageLabel.getText();
         messageLabel.setText(oldText + text);
     }
-    
-    private final MouseListener startPointMouseListener = new MouseAdapter(){
+
+    private final MouseListener startPointMouseListener = new MouseAdapter() {
         @Override
-        public void mouseClicked(MouseEvent e){
+        public void mouseClicked(MouseEvent e) {
             setPoint(e, true);
         }
     };
-    
-    private final MouseListener endPointMouseListener = new MouseAdapter(){
+
+    private final MouseListener endPointMouseListener = new MouseAdapter() {
         @Override
-        public void mouseClicked(MouseEvent e){
+        public void mouseClicked(MouseEvent e) {
             setPoint(e, false);
         }
     };
-    
-    private void setPoint(MouseEvent e, Boolean ifStart){
+
+    private void setPoint(MouseEvent e, Boolean ifStart) {
         int x = e.getX() / mazePrint.getSquareSize();
-        int y = e.getY()/ mazePrint.getSquareSize();
-        if (x % 2 == 0 || y % 2 == 0){
+        int y = e.getY() / mazePrint.getSquareSize();
+        if (x % 2 == 0 || y % 2 == 0) {
             showMessage("Nie możesz wybrać punktu w tym miejscu <br>");
             mazePrint.removeMouseListener(startPointMouseListener);
             mazePrint.removeMouseListener(endPointMouseListener);
-        } else{
-            x/=2;
-            y/=2;
-            int node = mazeData.getColumns()*y + x;
-            if(node == mazeData.getStart() || node == mazeData.getEnd())
+        } else {
+            x /= 2;
+            y /= 2;
+            int node = mazeData.getColumns() * y + x;
+            if (node == mazeData.getStart() || node == mazeData.getEnd()) {
                 showMessage("Nie możesz wybrać punktu w tym miejscu <br>");
-            else{
-                if (ifStart == true){
-                   updateStartCell(y, x);
-                   showMessage("Wybrano punkt początkowy: "+ node + "<br>");
-                   mazePrint.removeMouseListener(startPointMouseListener);
-                   mazeData.setStart(node);
-               }else{
-                   updateEndCell(y, x);
-                   showMessage("Wybrano punkt końcowy: "+ node + "<br>");
-                   mazePrint.removeMouseListener(endPointMouseListener);
-                   mazeData.setEnd(node);
-               }
-            setMazeLabels();
-                
+            } else {
+                if (ifStart == true) {
+                    updateStartCell(y, x);
+                    showMessage("Wybrano punkt początkowy: " + node + "<br>");
+                    mazePrint.removeMouseListener(startPointMouseListener);
+                    mazeData.setStart(node);
+                } else {
+                    updateEndCell(y, x);
+                    showMessage("Wybrano punkt końcowy: " + node + "<br>");
+                    mazePrint.removeMouseListener(endPointMouseListener);
+                    mazeData.setEnd(node);
+                }
+                setMazeLabels();
+
             }
-           
+
         }
     }
 
     private void updateStartCell(int y, int x) {
         int oldX, oldY;
-        int oldStart= mazeData.getStart();
-        oldY = oldStart/mazeData.getColumns();
-        oldX = oldStart -oldY*mazeData.getColumns();
+        int oldStart = mazeData.getStart();
+        oldY = oldStart / mazeData.getColumns();
+        oldX = oldStart - oldY * mazeData.getColumns();
         List<List<Cell>> cells = mazeData.getMazeCells();
-        cells.get(oldY*2+1).set(oldX*2+1, Cell.PATH);
-        cells.get(y*2+1).set(x*2+1, Cell.START);
+        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.PATH);
+        cells.get(y * 2 + 1).set(x * 2 + 1, Cell.START);
         mazeData.setMazeCells(cells);
         printMaze();
     }
-    
+
     private void updateEndCell(int y, int x) {
         int oldX, oldY;
-        int oldEnd= mazeData.getEnd();
-        oldY = oldEnd/mazeData.getColumns();
-        oldX = oldEnd -oldY*mazeData.getColumns();
+        int oldEnd = mazeData.getEnd();
+        oldY = oldEnd / mazeData.getColumns();
+        oldX = oldEnd - oldY * mazeData.getColumns();
         List<List<Cell>> cells = mazeData.getMazeCells();
-        cells.get(oldY*2+1).set(oldX*2+1, Cell.PATH);
-        cells.get(y*2+1).set(x*2+1, Cell.END);
+        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.PATH);
+        cells.get(y * 2 + 1).set(x * 2 + 1, Cell.END);
         mazeData.setMazeCells(cells);
         printMaze();
     }

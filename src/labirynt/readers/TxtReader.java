@@ -17,7 +17,7 @@ import labirynt.Passage;
  *
  * @author Anton
  */
-public class TxtReader implements MazeReader {
+public class TxtReader {
     
     private final String filePath;
     
@@ -25,7 +25,7 @@ public class TxtReader implements MazeReader {
         this.filePath = filePath;
     }
 
-    @Override
+    
     public void readFromFile(MazeData mazeData) {
         ArrayList<ArrayList<Cell>> cells = new ArrayList();
         mazeData.setAdjacencyMatrix(null);

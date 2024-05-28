@@ -18,7 +18,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 import labirynt.Cell;
+import Console.Console;
+import Observers.ConsoleObserver;
 import labirynt.MazeSolver;
+import Observers.Observer;
 
 /**
  *
@@ -300,7 +303,7 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    private void readFile(File file) {
+    public void readFile(File file) {
         MazeReader reader = new MazeReader(file, mazeData, this);
         reader.readFile();
         showMessage("Wczytano labirynt: " + mazeData.getColumns() + "x" + mazeData.getRows() + "<br>");
@@ -403,5 +406,14 @@ public class MainFrame extends javax.swing.JFrame {
         cells.get(y * 2 + 1).set(x * 2 + 1, Cell.END);
         mazeData.setMazeCells(cells);
         printMaze();
+    }
+    
+    @Override
+     public void setVisible(boolean b) {
+        super.setVisible(b);
+        Console console = new Console();
+        Observer consoleObserver = new ConsoleObserver(this);
+        console.addObserver(consoleObserver);
+        console.setConsoleListener();
     }
 }

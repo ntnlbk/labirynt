@@ -22,6 +22,7 @@ import Console.Console;
 import Observers.ConsoleObserver;
 import labirynt.MazeSolver;
 import Observers.Observer;
+import labirynt.Path;
 
 /**
  *
@@ -29,16 +30,15 @@ import Observers.Observer;
  */
 public class MainFrame extends javax.swing.JFrame {
 
-    private final MazeData mazeData;
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int screenWidth = (int) screenSize.width;
     private final int screenHeight = (int) screenSize.height;
+    
+    private final MazeData mazeData;
     private MazePrint mazePrint;
     private MazeSolver mazeSolver;
+    private Path path;
 
-    /**
-     * Creates new form MainFrame
-     */
     public MainFrame() {
         initComponents();
         mazeData = new MazeData();
@@ -142,13 +142,15 @@ public class MainFrame extends javax.swing.JFrame {
 
         startLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         startLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        startLabel.setText("Start: 0");
+        startLabel.setText("");
         ToolBar.add(startLabel);
+        startLabel.getAccessibleContext().setAccessibleName("");
 
         endLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         endLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        endLabel.setText("Koniec: 0");
+        endLabel.setText("");
         ToolBar.add(endLabel);
+        endLabel.getAccessibleContext().setAccessibleName("");
 
         mazePanel.setBackground(new java.awt.Color(255, 255, 255));
         Dimension mazePanelSize = new java.awt.Dimension(screenWidth * 6 / 10 ,screenHeight * 8 / 10);
@@ -257,14 +259,16 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_chooseEndButtonActionPerformed
 
     private void findPathButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findPathButtonActionPerformed
-        if (mazeSolver == null || !mazeSolver.isPath) {
+        if (path == null) {
             mazeSolver = new MazeSolver(mazeData);
-            mazeSolver.getPath();
+            path = new Path(mazeSolver.generatePath(), mazeData);
+        }
+        if(!path.isVisible()){
+            path.show();
             findPathButton.setText("Schowaj ścieżkę");
             mazePanel.repaint();
         } else {
-            mazeSolver.isPath = false;
-            mazeSolver.cellsResetPath();
+            path.hide();
             findPathButton.setText("Znajdź ścieżkę");
             mazePanel.repaint();
         }
@@ -312,7 +316,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void printMaze() {
-        mazePrint = new MazePrint(mazeData);
+        initMaze();
         int margin = 20;
         int maxMazeSize = (1024 * 2 + 1) * mazePrint.getSquareSize();
         mazePanel.removeAll();
@@ -323,14 +327,20 @@ public class MainFrame extends javax.swing.JFrame {
         mazePanel.add(scrollPane);
         mazePanel.revalidate();
         mazePanel.repaint();
-
+    }
+    
+    private void initMaze(){
+        mazePrint = new MazePrint(mazeData);
+        path = null;
+        mazeSolver = null;
+        findPathButton.setText("Znajdź ścieżkę");
     }
 
     private void setMazeLabels() {
         columnsLabel.setText("Kolumny: " + mazeData.getColumns());
         rowsLabel.setText("Wiersze: " + mazeData.getRows());
-        startLabel.setText("Start: " + mazeData.getStart());
-        endLabel.setText("End: " + mazeData.getEnd());
+        startLabel.setText("Początek: ( " + mazeData.getStartX() +", " + mazeData.getStartY() + " )");
+        endLabel.setText("Koniec: ( " + mazeData.getEndX() +", " + mazeData.getEndY() + " )");
     }
 
     public void showMessage(String text) {
@@ -390,7 +400,7 @@ public class MainFrame extends javax.swing.JFrame {
         oldY = oldStart / mazeData.getColumns();
         oldX = oldStart - oldY * mazeData.getColumns();
         List<List<Cell>> cells = mazeData.getMazeCells();
-        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.PATH);
+        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.SPACE);
         cells.get(y * 2 + 1).set(x * 2 + 1, Cell.START);
         mazeData.setMazeCells(cells);
         printMaze();
@@ -402,7 +412,7 @@ public class MainFrame extends javax.swing.JFrame {
         oldY = oldEnd / mazeData.getColumns();
         oldX = oldEnd - oldY * mazeData.getColumns();
         List<List<Cell>> cells = mazeData.getMazeCells();
-        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.PATH);
+        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.SPACE);
         cells.get(y * 2 + 1).set(x * 2 + 1, Cell.END);
         mazeData.setMazeCells(cells);
         printMaze();

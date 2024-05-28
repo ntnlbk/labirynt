@@ -11,8 +11,6 @@ import java.util.List;
  * @author Anton
  */
 public class MazeData {
-    
-    private int rows;
 
     public int getRows() {
         return rows;
@@ -37,6 +35,14 @@ public class MazeData {
     public int getStart() {
         return start;
     }
+    
+    public int getStartX() {
+        return start % columns;
+    }
+    
+    public int getStartY() {
+        return start / columns;
+    }
 
     public void setStart(int start) {
         this.start = start;
@@ -44,6 +50,14 @@ public class MazeData {
 
     public int getEnd() {
         return end;
+    }
+    
+    public int getEndX() {
+        return end % columns;
+    }
+    
+    public int getEndY() {
+        return end / columns;
     }
 
     public void setEnd(int end) {
@@ -65,6 +79,8 @@ public class MazeData {
     public void setAdjacencyMatrix(AdjacencyMatrix adjacencyMatrix) {
         this.adjacencyMatrix = adjacencyMatrix;
     }
+    
+    private int rows;
     private int columns;
     private int start;
     private int end;

@@ -52,7 +52,7 @@ public class TxtReader {
                             nextIsStart = false;
                         }
                         else
-                            subList.add(Cell.PATH);
+                            subList.add(Cell.SPACE);
                         if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
                             int node = countNode(columns, cells, subList);
                             matrix.addPath(node+1, Passage.LEFT);

@@ -98,7 +98,7 @@ public class BinReader{
             value = inputStream.read();
             count = inputStream.read();
             switch(value){
-                    case ' ' -> addToMazeCells(Cell.PATH, count);
+                    case ' ' -> addToMazeCells(Cell.SPACE, count);
                     case 'X' ->  addToMazeCells(Cell.WALL, count);
             }
         }
@@ -116,7 +116,7 @@ public class BinReader{
                 subList = new ArrayList<>();
                 subList.add(value);
             }
-            if(value == Cell.PATH){
+            if(value == Cell.SPACE){
                 if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
                     int node = countNode(columns, cells, subList);
                         matrix.addPath(node+1, Passage.LEFT);

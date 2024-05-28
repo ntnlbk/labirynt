@@ -10,8 +10,8 @@ package labirynt;
  */
 public enum Cell {
     START,
-    PATH,
+    SPACE,
     WALL,
     END,
-    PASSAGE
+    PATH
 }

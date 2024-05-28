@@ -25,8 +25,6 @@ public class MazePrint extends JPanel{
     private final Color PATH_COLOR = Color.WHITE;
     private final Color PASSAGE_COLOR = Color.GREEN;
     
-    private final List<List<Cell>> cells;
-    
     private final MazeData mazeData;
     
     public int getSquareSize(){
@@ -35,7 +33,6 @@ public class MazePrint extends JPanel{
     
     public MazePrint(MazeData mazeData){
         this.mazeData = mazeData;
-        this.cells=mazeData.getMazeCells();
         setBackground(Color.white);
     }
     
@@ -45,6 +42,7 @@ public class MazePrint extends JPanel{
         
         int ROWS_TO_PRINT = (mazeData.getRows() * 2) + 1;
         int COLUMNS_TO_PRINT = (mazeData.getColumns() * 2) + 1;
+        List<List<Cell>> cells = mazeData.getMazeCells();
         
         if(cells!=null){
             for(int row =0; row<ROWS_TO_PRINT; row++){
@@ -53,16 +51,20 @@ public class MazePrint extends JPanel{
                     Cell cell = rowCells.get(col);
                     switch (cell){
                         case WALL -> g.setColor(WALL_COLOR);
-                        case PASSAGE -> g.setColor(PASSAGE_COLOR);
+                        case PATH -> g.setColor(PASSAGE_COLOR);
                         case START -> g.setColor(START_COLOR);
                         case END -> g.setColor(END_COLOR);
                         default -> g.setColor(PATH_COLOR);
                     }
-                    g.fillRect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
+                    printCell(g, col, row);
                 }
             }
         }
      
+    }
+    
+    private void printCell(Graphics g, int col, int row){
+        g.fillRect(col * SQUARE_SIZE, row * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
     }
     
 }

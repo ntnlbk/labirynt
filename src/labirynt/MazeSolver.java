@@ -17,7 +17,6 @@ public class MazeSolver {
     private final MazeData mazeData;
     private final int start;
     private final int end;
-    public boolean isPath = false;
     private List<Integer> path;
     
     public MazeSolver(MazeData mazeData){
@@ -29,8 +28,8 @@ public class MazeSolver {
         end = mazeData.getEnd();
     }
     
-    public List<Integer> getPath(){
-        solve();
+    public List<Integer> generatePath(){
+        BFS();
         path = new ArrayList<>();
         int curr = start;
         path.add(curr);
@@ -40,74 +39,10 @@ public class MazeSolver {
             path.add(next);
             curr = next;
         }
-        isPath =true;
-        cellsReset();
         return path;
     }
     
-    private void cellsReset(){
-        List<List<Cell>> cells = mazeData.getMazeCells();
-        int columns = mazeData.getColumns();
-        int currX, currY;
-        int nextX, nextY;
-        for(int i=0; i<path.size()-1; i++){
-            currX = cellNumber(path.get(i) % columns);
-            currY = cellNumber(path.get(i) / columns);
-            nextX = cellNumber(path.get(i+1) % columns);
-            nextY = cellNumber(path.get(i+1) / columns);
-            if ( currX == nextX){
-                int min = Math.min(currY, nextY);
-                int max = Math.max(currY, nextY);
-                for (int j = min; j <= max; j++){
-                    if(cells.get(j).get(currX) != Cell.START && cells.get(j).get(currX) != Cell.END)
-                    cells.get(j).set(currX, Cell.PASSAGE);
-                }
-            } else{
-                int min = Math.min(currX, nextX);
-                int max = Math.max(currX, nextX);
-                for (int j = min; j <= max; j++){
-                    if(cells.get(currY).get(j) != Cell.START && cells.get(currY).get(j) != Cell.END)
-                    cells.get(currY).set(j, Cell.PASSAGE);
-                }
-            }
-        }
-        //System.out.println("Cells:" + cells);
-    }
-    
-    public void cellsResetPath(){
-        List<List<Cell>> cells = mazeData.getMazeCells();
-        int columns = mazeData.getColumns();
-        int currX, currY;
-        int nextX, nextY;
-        for(int i=0; i<path.size()-1; i++){
-            currX = cellNumber(path.get(i) % columns);
-            currY = cellNumber(path.get(i) / columns);
-            nextX = cellNumber(path.get(i+1) % columns);
-            nextY = cellNumber(path.get(i+1) / columns);
-            if ( currX == nextX){
-                int min = Math.min(currY, nextY);
-                int max = Math.max(currY, nextY);
-                for (int j = min; j <= max; j++){
-                    if(cells.get(j).get(currX) != Cell.START && cells.get(j).get(currX) != Cell.END)
-                    cells.get(j).set(currX, Cell.PATH);
-                }
-            } else{
-                int min = Math.min(currX, nextX);
-                int max = Math.max(currX, nextX);
-                for (int j = min; j <= max; j++){
-                    if(cells.get(currY).get(j) != Cell.START && cells.get(currY).get(j) != Cell.END)
-                    cells.get(currY).set(j, Cell.PATH);
-                }
-            }
-        }
-        //System.out.println("Cells:" + cells);
-    }
-    
-    private int cellNumber(int node){
-        return node * 2 + 1;
-    }
-    
-    private void solve(){
+    private void BFS(){
         List<Integer> queue = new ArrayList<>();
         int curr = end;
         queue.add(curr);

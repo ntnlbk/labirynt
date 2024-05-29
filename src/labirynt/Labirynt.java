@@ -5,6 +5,7 @@
 package labirynt;
 
 import Console.Console;
+import Console.ConsoleListener;
 import labirynt.frames.MainFrame;
 
 /**
@@ -21,7 +22,9 @@ public class Labirynt {
         mainFrame.setVisible(true);
         Console console = new Console();
         console.addObserver(mainFrame);
-        console.setConsoleListener();
+        //console.setConsoleListener();
+        ConsoleListener consoleListener = new ConsoleListener(console);
+        consoleListener.start();
     }
     
 }

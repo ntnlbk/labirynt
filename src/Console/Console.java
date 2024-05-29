@@ -38,8 +38,8 @@ public class Console {
         }
     }
  
-    public void setConsoleListener() {
+    /*public void setConsoleListener() {
         ConsoleListener consoleListener = new ConsoleListener(this);
         consoleListener.start();
-    }
+    }*/
 }

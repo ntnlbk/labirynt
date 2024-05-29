@@ -88,6 +88,14 @@ public class MazeData {
         this.adjacencyMatrix = adjacencyMatrix;
     }
     
+    public void initAdjacencyMatrix(){
+        this.adjacencyMatrix = new AdjacencyMatrix();
+    }
+    
+    public void addPathToMatrix(int node, Passage passage){
+        adjacencyMatrix.addPath(node, passage);
+    }
+    
     /*public List<List<Node>> getMazeNodes() {
         return mazeNodes;
     }

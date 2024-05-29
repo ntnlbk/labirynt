@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import labirynt.AdjacencyMatrix;
+//import labirynt.AdjacencyMatrix;
 import labirynt.Cell;
 import labirynt.MazeData;
 import labirynt.Passage;
@@ -24,7 +24,7 @@ import labirynt.Passage;
 public class BinReader{
     
     private final String filePath;
-    private AdjacencyMatrix matrix;
+    //private AdjacencyMatrix matrix;
     private ArrayList<Cell> subList = new ArrayList<>() ; 
     private final  ArrayList<ArrayList<Cell>> cells = new ArrayList();
     private int columns;
@@ -43,14 +43,15 @@ public class BinReader{
         try {
             InputStream inputStream = new FileInputStream(filePath);
             mazeData.setAdjacencyMatrix(null);
-            matrix = new AdjacencyMatrix();
+            mazeData.initAdjacencyMatrix();
+            //matrix = new AdjacencyMatrix();
             readFileId(inputStream);
             readRowsAndColumns(inputStream, mazeData) ;
             readEntryAndExit(inputStream, mazeData);
             readMaze(inputStream, mazeData);
             updateStartCell(mazeData);
             updateEndCell(mazeData);
-            mazeData.setAdjacencyMatrix(matrix);
+            //mazeData.setAdjacencyMatrix(matrix);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(BinReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -102,8 +103,8 @@ public class BinReader{
             value = inputStream.read();
             count = inputStream.read();
             switch(value){
-                    case ' ' -> addToMazeCells(Cell.SPACE, count);
-                    case 'X' ->  addToMazeCells(Cell.WALL, count);
+                    case ' ' -> addToMazeCells(Cell.SPACE, count, mazeData);
+                    case 'X' ->  addToMazeCells(Cell.WALL, count, mazeData);
             }
         }
         cells.add(subList);
@@ -111,7 +112,7 @@ public class BinReader{
         mazeData.setMazeCells((List)cells);
     }
 
-    private void addToMazeCells(Cell value, int cellsToAdd) {
+    private void addToMazeCells(Cell value, int cellsToAdd, MazeData mazeData) {
         while(cellsToAdd != -1){
             if(subList.size() < subListMaxSize){
                 subList.add(value);
@@ -126,13 +127,13 @@ public class BinReader{
             if(value == Cell.SPACE){
                 if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
                     int node = countNode(columns, cells, subList);
-                        matrix.addPath(node+1, Passage.LEFT);
+                        mazeData.addPathToMatrix(node+1, Passage.LEFT);
                         if(node != rows * columns - 1)
-                            matrix.addPath(node, Passage.RIGHT);
+                            mazeData.addPathToMatrix(node, Passage.RIGHT);
                 } 
                 if (cells.size() % 2 == 0 && subList.size() % 2 == 0 && !cells.isEmpty() && !subList.isEmpty()){
-                    matrix.addPath(countNode(columns, cells, subList), Passage.BOTTOM);
-                    matrix.addPath(countNode(columns, cells, subList)+columns, Passage.TOP);
+                    mazeData.addPathToMatrix(countNode(columns, cells, subList), Passage.BOTTOM);
+                    mazeData.addPathToMatrix(countNode(columns, cells, subList)+columns, Passage.TOP);
                     }
                 }
             cellsToAdd--;

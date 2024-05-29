@@ -8,7 +8,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import labirynt.AdjacencyMatrix;
+//import labirynt.AdjacencyMatrix;
 import labirynt.Cell;
 import labirynt.MazeData;
 import labirynt.Passage;
@@ -29,7 +29,8 @@ public class TxtReader {
     public void readFromFile(MazeData mazeData) {
         ArrayList<ArrayList<Cell>> cells = new ArrayList();
         mazeData.setAdjacencyMatrix(null);
-        AdjacencyMatrix matrix = new AdjacencyMatrix();
+        mazeData.initAdjacencyMatrix();
+        //AdjacencyMatrix matrix = new AdjacencyMatrix();
         int columns = 0;
         try(FileInputStream fin=new FileInputStream(filePath))
         {    
@@ -59,12 +60,12 @@ public class TxtReader {
                             subList.add(Cell.SPACE);
                         if(cells.size() % 2 == 1 && subList.size() % 2 == 1){
                             int node = countNode(columns, cells, subList);
-                            matrix.addPath(node+1, Passage.LEFT);
-                            matrix.addPath(node, Passage.RIGHT);
+                            mazeData.addPathToMatrix(node+1, Passage.LEFT);
+                            mazeData.addPathToMatrix(node, Passage.RIGHT);
                         } 
                         if (cells.size() % 2 == 0 && subList.size() % 2 == 0 && !cells.isEmpty() && !subList.isEmpty()){
-                            matrix.addPath(countNode(columns, cells, subList), Passage.BOTTOM);
-                            matrix.addPath(countNode(columns, cells, subList)+columns, Passage.TOP);
+                            mazeData.addPathToMatrix(countNode(columns, cells, subList), Passage.BOTTOM);
+                            mazeData.addPathToMatrix(countNode(columns, cells, subList)+columns, Passage.TOP);
                         }
                         
                     }
@@ -88,7 +89,7 @@ public class TxtReader {
             mazeData.setMazeCells((List)cells);
             mazeData.setColumns((cells.get(0).size() - 1) / 2);
             mazeData.setRows((cells.size() - 1) / 2);
-            mazeData.setAdjacencyMatrix(matrix);
+            //mazeData.setAdjacencyMatrix(matrix);
             fin.close();
         }
         catch(IOException ex){

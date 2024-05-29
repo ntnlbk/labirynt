@@ -17,7 +17,6 @@ public class MazeSolver {
     private final MazeData mazeData;
     private final int start;
     private final int end;
-    private List<Integer> path;
     
     public MazeSolver(MazeData mazeData){
         this.mazeData = mazeData;
@@ -30,7 +29,7 @@ public class MazeSolver {
     
     public List<Integer> generatePath(){
         BFS();
-        path = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
         int curr = start;
         path.add(curr);
         int next;
@@ -62,7 +61,7 @@ public class MazeSolver {
     }
     
     private int[] neighbours(int current){
-        return mazeData.getAdjacencyMatrix().getNodesConnectedWitchCurrent(current, mazeData.getColumns());
+        return mazeData.getNeighbours(current);
     }
     
     

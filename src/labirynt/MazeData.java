@@ -96,27 +96,9 @@ public class MazeData {
         adjacencyMatrix.addPath(node, passage);
     }
     
-    /*public List<List<Node>> getMazeNodes() {
-        return mazeNodes;
+    public int[] getNeighbours(int current){
+        return adjacencyMatrix.getNodesConnectedWitchCurrent(current, columns);
     }
-
-    public void setMazeNodes(List<List<Node>> mazeNodes) {
-        this.mazeNodes = mazeNodes;
-    }
-    
-    public void setNodeType(Cell type, int x, int y){
-        mazeNodes.get(y).get(x).setType(type);
-    }
-    
-    public Node node(int id){
-        int x = id % columns;
-        int y = id / columns;
-        return mazeNodes.get(y).get(x);
-    }
-    
-    public int nodeID(int x, int y){
-        return y * columns + x;
-    }*/
     
     private int rows;
     private int columns;
@@ -127,6 +109,5 @@ public class MazeData {
     
     private AdjacencyMatrix adjacencyMatrix;
     
-    //private List<List<Node>> mazeNodes;
     
 }

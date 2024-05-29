@@ -16,34 +16,38 @@ public class MazeReader {
     
     private final File file;
     private final MazeData mazeData;
-    private final MainFrame mainFrame;
+    private String message;
     
     public MazeReader(File file, MazeData mazeData, MainFrame mainFrame){
         this.file = file;
         this.mazeData = mazeData;
-        this.mainFrame = mainFrame;
+    }
+    
+    public String getMessage(){
+        return message;
     }
     
     public void readFile(){
         parseFile();
     }
+    
     private void parseFile() {
         String fileName = file.getName();
         switch (getFileExtension(fileName)){
             case "txt" -> {
-                mainFrame.showMessage("Plik tekstowy <br>");
+                message = "Plik tekstowy <br>";
                 TxtReader reader = new TxtReader(file.getAbsolutePath());
                 reader.readFromFile(mazeData);
                 
             }
             
             case "bin" -> {
-                mainFrame.showMessage("Plik binarny <br>");
+                message = "Plik binarny <br>";
                 BinReader reader = new BinReader(file.getAbsolutePath());
                 reader.readFromFile(mazeData);
             }
             default ->{
-                mainFrame.showMessage("Plik ma format nieobsługiwany: " + getFileExtension(fileName) + "<br>");
+                message = "Plik ma format nieobsługiwany: " + getFileExtension(fileName) + "<br>";
             }
         }
         

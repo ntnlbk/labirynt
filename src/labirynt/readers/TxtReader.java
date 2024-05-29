@@ -25,18 +25,14 @@ public class TxtReader {
         this.filePath = filePath;
     }
 
-    
     public void readFromFile(MazeData mazeData) {
         ArrayList<ArrayList<Cell>> cells = new ArrayList();
         mazeData.setAdjacencyMatrix(null);
         mazeData.initAdjacencyMatrix();
-        //AdjacencyMatrix matrix = new AdjacencyMatrix();
         int columns = 0;
         try(FileInputStream fin=new FileInputStream(filePath))
         {    
             int i;
-            //int x = 0;
-            //int y = 0;
             boolean nextIsStart = false;
             ArrayList<Cell> subList = new ArrayList<>() ; 
             while((i=fin.read())!=-1){
@@ -44,12 +40,9 @@ public class TxtReader {
                     case '\n' -> {
                         if (cells.isEmpty()){
                             columns = subList.size()/2;
-                            //matrix.setColumns(columns);
                         }
                         cells.add(subList);
                         subList = new ArrayList<>();
-                        //x = 0;
-                        //y++;
                     }
                     case ' ' -> {
                         if(nextIsStart){
@@ -89,7 +82,6 @@ public class TxtReader {
             mazeData.setMazeCells((List)cells);
             mazeData.setColumns((cells.get(0).size() - 1) / 2);
             mazeData.setRows((cells.size() - 1) / 2);
-            //mazeData.setAdjacencyMatrix(matrix);
             fin.close();
         }
         catch(IOException ex){

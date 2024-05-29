@@ -26,16 +26,16 @@ public class Path {
     }
     
     public void show(){
-        colorPath(Cell.PATH);
+        changePathCellsType(Cell.PATH);
         visible = true;
     }
     
     public void hide(){
-        colorPath(Cell.SPACE);
+        changePathCellsType(Cell.SPACE);
         visible = false;
     }
 
-    private void colorPath(Cell type){
+    private void changePathCellsType(Cell type){
         //List<List<Cell>> cells = mazeData.getMazeCells();
         int columns = mazeData.getColumns();
         int currX, currY;

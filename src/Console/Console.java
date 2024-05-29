@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Anton
  */
-public class Console implements Subject {
+public class Console {
     private final List<Observer> observers = new ArrayList<>();
     private String filePath;
 
@@ -21,17 +21,17 @@ public class Console implements Subject {
     }
  
     
-    @Override
+    
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
  
-    @Override
+    
     public void removeObserver(Observer observer) {
         observers.remove(observer);
     }
  
-    @Override
+    
     public void notifyObservers() {
         for (Observer observer : observers) {
             observer.update(filePath);

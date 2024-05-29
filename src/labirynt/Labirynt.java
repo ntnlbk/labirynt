@@ -4,6 +4,7 @@
  */
 package labirynt;
 
+import Console.Console;
 import labirynt.frames.MainFrame;
 
 /**
@@ -18,6 +19,9 @@ public class Labirynt {
     public static void main(String[] args) {
         MainFrame mainFrame = new MainFrame();
         mainFrame.setVisible(true);
+        Console console = new Console();
+        console.addObserver(mainFrame);
+        console.setConsoleListener();
     }
     
 }

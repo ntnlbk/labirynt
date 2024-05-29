@@ -15,7 +15,7 @@ import labirynt.Cell;
  *
  * @author Admin
  */
-public class MazePrint extends JPanel{
+public class MazePrinter extends JPanel{
     
     private final int SQUARE_SIZE = 10;
     
@@ -31,7 +31,7 @@ public class MazePrint extends JPanel{
         return SQUARE_SIZE;
     }
     
-    public MazePrint(MazeData mazeData){
+    public MazePrinter(MazeData mazeData){
         this.mazeData = mazeData;
         setBackground(Color.white);
     }

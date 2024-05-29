@@ -24,19 +24,14 @@ import labirynt.Passage;
 public class BinReader{
     
     private final String filePath;
-    //private AdjacencyMatrix matrix;
     private ArrayList<Cell> subList = new ArrayList<>() ; 
     private final  ArrayList<ArrayList<Cell>> cells = new ArrayList();
     private int columns;
     private int rows;
-    //private int x;
-    //private int y;
     private int subListMaxSize;
+    
     public BinReader(String filePath){
         this.filePath = filePath;
-        //this.x = 0;
-        //this.y = 0;
-       
     }
 
     public void readFromFile(MazeData mazeData) {
@@ -44,14 +39,12 @@ public class BinReader{
             InputStream inputStream = new FileInputStream(filePath);
             mazeData.setAdjacencyMatrix(null);
             mazeData.initAdjacencyMatrix();
-            //matrix = new AdjacencyMatrix();
             readFileId(inputStream);
             readRowsAndColumns(inputStream, mazeData) ;
             readEntryAndExit(inputStream, mazeData);
             readMaze(inputStream, mazeData);
-            updateStartCell(mazeData);
-            updateEndCell(mazeData);
-            //mazeData.setAdjacencyMatrix(matrix);
+            updateStartCellType(mazeData);
+            updateEndCellType(mazeData);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(BinReader.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -63,7 +56,6 @@ public class BinReader{
     private void readRowsAndColumns(InputStream inputStream, MazeData mazeData) throws IOException {
         columns = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setColumns(columns);
-        //matrix.setColumns(columns);
         rows = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setRows(rows);
         subListMaxSize = mazeData.getColumns()*2+1;
@@ -108,7 +100,6 @@ public class BinReader{
             }
         }
         cells.add(subList);
-        //y++;
         mazeData.setMazeCells((List)cells);
     }
 
@@ -120,8 +111,6 @@ public class BinReader{
             else {
                 cells.add(subList);
                 subList = new ArrayList<>();
-                //x = 0;
-                //y ++;
                 subList.add(value);
             }
             if(value == Cell.SPACE){
@@ -140,25 +129,25 @@ public class BinReader{
         }
     }
     
-    private void updateStartCell(MazeData mazeData) {
-        int oldStart= mazeData.getStart();
-        updateCell(mazeData, Cell.START, oldStart);
+    private void updateStartCellType(MazeData mazeData) {
+        int startNode= mazeData.getStart();
+        updateCellType(mazeData, Cell.START, startNode);
     }
     
-    private void updateEndCell(MazeData mazeData) {
-        int oldEnd= mazeData.getEnd();
-        updateCell(mazeData, Cell.END, oldEnd);
+    private void updateEndCellType(MazeData mazeData) {
+        int endNode= mazeData.getEnd();
+        updateCellType(mazeData, Cell.END, endNode);
         
     }
     
-    private void updateCell(MazeData mazeData, Cell type, int oldCell ){
-        int oldY = oldCell/mazeData.getColumns();
-        int oldX = oldCell -oldY*mazeData.getColumns();
-        mazeData.setCellType(type, oldX*2+1, oldY*2+1);
+    private void updateCellType(MazeData mazeData, Cell type, int node ){
+        int nodeY = node/mazeData.getColumns();
+        int nodeX = node -nodeY*mazeData.getColumns();
+        mazeData.setCellType(type, nodeX*2+1, nodeY*2+1);
         if (type == Cell.START)
-            mazeData.setCellType(Cell.WALL, oldX*20, oldY*2+1);
+            mazeData.setCellType(Cell.WALL, nodeX*20, nodeY*2+1);
         if (type == Cell.END)
-            mazeData.setCellType(Cell.WALL, oldX*2+2, oldY*2+1);
+            mazeData.setCellType(Cell.WALL, nodeX*2+2, nodeY*2+1);
     }
     
     private int countNode(int columns, ArrayList<ArrayList<Cell>> cells, ArrayList<Cell> subList) {

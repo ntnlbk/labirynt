@@ -17,6 +17,7 @@ public class ConsoleObserver implements Observer {
     public ConsoleObserver(MainFrame mainFrame){
         this.mainFrame = mainFrame;
     }
+    
     @Override
     public void update(String filePath) {
         mainFrame.showMessage("Wczytano z terminalu: " + filePath + "\n");
@@ -24,7 +25,7 @@ public class ConsoleObserver implements Observer {
         if(file.exists()){
             mainFrame.readFile(file);
         } else{
-        mainFrame.showMessage("Plik nie istieje\n");
+            mainFrame.showMessage("Plik nie istieje\n");
         }
     }
 }

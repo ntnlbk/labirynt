@@ -29,9 +29,13 @@ public class BinReader{
     private final  ArrayList<ArrayList<Cell>> cells = new ArrayList();
     private int columns;
     private int rows;
+    //private int x;
+    //private int y;
     private int subListMaxSize;
     public BinReader(String filePath){
         this.filePath = filePath;
+        //this.x = 0;
+        //this.y = 0;
        
     }
 
@@ -58,7 +62,7 @@ public class BinReader{
     private void readRowsAndColumns(InputStream inputStream, MazeData mazeData) throws IOException {
         columns = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setColumns(columns);
-        matrix.setColumns(columns);
+        //matrix.setColumns(columns);
         rows = (readTwoBytesToInt(inputStream)-1)/2 ;
         mazeData.setRows(rows);
         subListMaxSize = mazeData.getColumns()*2+1;
@@ -103,6 +107,7 @@ public class BinReader{
             }
         }
         cells.add(subList);
+        //y++;
         mazeData.setMazeCells((List)cells);
     }
 
@@ -114,6 +119,8 @@ public class BinReader{
             else {
                 cells.add(subList);
                 subList = new ArrayList<>();
+                //x = 0;
+                //y ++;
                 subList.add(value);
             }
             if(value == Cell.SPACE){
@@ -134,23 +141,25 @@ public class BinReader{
     
     private void updateStartCell(MazeData mazeData) {
         int oldStart= mazeData.getStart();
-        int oldY = oldStart/mazeData.getColumns();
-        int oldX = oldStart -oldY*mazeData.getColumns();
-        List<List<Cell>> cellsFromData = mazeData.getMazeCells();
-        cellsFromData.get(oldY*2+1).set(oldX*2+1, Cell.START);
-        cellsFromData.get(oldY*2+1).set(oldX*20, Cell.WALL);
-        mazeData.setMazeCells(cellsFromData);
+        updateCell(mazeData, Cell.START, oldStart);
     }
     
     private void updateEndCell(MazeData mazeData) {
         int oldEnd= mazeData.getEnd();
-        int oldY = oldEnd/mazeData.getColumns();
-        int oldX = oldEnd -oldY*mazeData.getColumns();
-        List<List<Cell>> cellsFromData = mazeData.getMazeCells();
-        cellsFromData.get(oldY*2+1).set(oldX*2+1, Cell.END);
-        cellsFromData.get(oldY*2+1).set(oldX*2+2, Cell.WALL);
-        mazeData.setMazeCells(cellsFromData);
+        updateCell(mazeData, Cell.END, oldEnd);
+        
     }
+    
+    private void updateCell(MazeData mazeData, Cell type, int oldCell ){
+        int oldY = oldCell/mazeData.getColumns();
+        int oldX = oldCell -oldY*mazeData.getColumns();
+        mazeData.setCellType(type, oldX*2+1, oldY*2+1);
+        if (type == Cell.START)
+            mazeData.setCellType(Cell.WALL, oldX*20, oldY*2+1);
+        if (type == Cell.END)
+            mazeData.setCellType(Cell.WALL, oldX*2+2, oldY*2+1);
+    }
+    
     private int countNode(int columns, ArrayList<ArrayList<Cell>> cells, ArrayList<Cell> subList) {
         int node = columns * ((cells.size()+1)/2 - 1)  + subList.size()/2;
         return node-1;

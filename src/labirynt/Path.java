@@ -11,9 +11,9 @@ import java.util.List;
  * @author Admin
  */
 public class Path {
-    private List<Integer> path;
+    private final List<Integer> path;
     private boolean visible;
-    private MazeData mazeData;
+    private final MazeData mazeData;
     
     public Path(List<Integer> path, MazeData mazeData){
         this.path = path;
@@ -36,7 +36,7 @@ public class Path {
     }
 
     private void colorPath(Cell type){
-        List<List<Cell>> cells = mazeData.getMazeCells();
+        //List<List<Cell>> cells = mazeData.getMazeCells();
         int columns = mazeData.getColumns();
         int currX, currY;
         int nextX, nextY;
@@ -49,15 +49,15 @@ public class Path {
                 int min = Math.min(currY, nextY);
                 int max = Math.max(currY, nextY);
                 for (int j = min; j <= max; j++){
-                    if(cells.get(j).get(currX) != Cell.START && cells.get(j).get(currX) != Cell.END)
-                    cells.get(j).set(currX, type);
+                    if(mazeData.getCellType(currX, j) != Cell.START && mazeData.getCellType(currX, j) != Cell.END)
+                    mazeData.setCellType(type, currX, j);
                 }
             } else{
                 int min = Math.min(currX, nextX);
                 int max = Math.max(currX, nextX);
                 for (int j = min; j <= max; j++){
-                    if(cells.get(currY).get(j) != Cell.START && cells.get(currY).get(j) != Cell.END)
-                    cells.get(currY).set(j, type);
+                    if(mazeData.getCellType(j, currY) != Cell.START && mazeData.getCellType(j, currY) != Cell.END)
+                    mazeData.setCellType(type, j, currY);
                 }
             }
         }

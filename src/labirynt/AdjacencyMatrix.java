@@ -18,13 +18,8 @@ public class AdjacencyMatrix {
     private final int LEFT_PATH = 1;
     private final int RIGHT_PATH = 3;
     
-    private int columns;
     
     private final HashMap<Integer, boolean[]> matrix = new HashMap<>();
-
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
     
     
     public void addPath(int from, Passage path){
@@ -49,7 +44,7 @@ public class AdjacencyMatrix {
         changePathToTrue(indexToChange, from);
     }
     
-    public int[] getNodesConnectedWitchCurrent(int current){
+    public int[] getNodesConnectedWitchCurrent(int current, int columns){
         final boolean defaultPaths[] = {false, false, false, false}; 
         boolean[] actualPaths =matrix.getOrDefault(current, defaultPaths);
         ArrayList<Integer> nodes = new ArrayList<>();

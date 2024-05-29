@@ -34,6 +34,8 @@ public class TxtReader {
         try(FileInputStream fin=new FileInputStream(filePath))
         {    
             int i;
+            //int x = 0;
+            //int y = 0;
             boolean nextIsStart = false;
             ArrayList<Cell> subList = new ArrayList<>() ; 
             while((i=fin.read())!=-1){
@@ -41,10 +43,12 @@ public class TxtReader {
                     case '\n' -> {
                         if (cells.isEmpty()){
                             columns = subList.size()/2;
-                            matrix.setColumns(columns);
+                            //matrix.setColumns(columns);
                         }
                         cells.add(subList);
                         subList = new ArrayList<>();
+                        //x = 0;
+                        //y++;
                     }
                     case ' ' -> {
                         if(nextIsStart){
@@ -78,6 +82,7 @@ public class TxtReader {
                         subList.add(Cell.WALL);
                         subList.set(subList.size()-2, Cell.END);
                     }
+
                 }
             } 
             mazeData.setMazeCells((List)cells);

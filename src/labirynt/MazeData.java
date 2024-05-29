@@ -71,6 +71,14 @@ public class MazeData {
     public void setMazeCells(List<List<Cell>> mazeCells) {
         this.mazeCells = mazeCells;
     }
+    
+    public void setCellType(Cell type, int x, int y){
+        mazeCells.get(y).set(x, type);
+    }
+    
+    public Cell getCellType( int x, int y){
+        return mazeCells.get(y).get(x);
+    }
 
     public AdjacencyMatrix getAdjacencyMatrix() {
         return adjacencyMatrix;
@@ -80,6 +88,28 @@ public class MazeData {
         this.adjacencyMatrix = adjacencyMatrix;
     }
     
+    /*public List<List<Node>> getMazeNodes() {
+        return mazeNodes;
+    }
+
+    public void setMazeNodes(List<List<Node>> mazeNodes) {
+        this.mazeNodes = mazeNodes;
+    }
+    
+    public void setNodeType(Cell type, int x, int y){
+        mazeNodes.get(y).get(x).setType(type);
+    }
+    
+    public Node node(int id){
+        int x = id % columns;
+        int y = id / columns;
+        return mazeNodes.get(y).get(x);
+    }
+    
+    public int nodeID(int x, int y){
+        return y * columns + x;
+    }*/
+    
     private int rows;
     private int columns;
     private int start;
@@ -88,5 +118,7 @@ public class MazeData {
     private List<List<Cell>> mazeCells;
     
     private AdjacencyMatrix adjacencyMatrix;
+    
+    //private List<List<Node>> mazeNodes;
     
 }

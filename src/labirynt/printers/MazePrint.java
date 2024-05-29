@@ -8,8 +8,8 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import java.awt.Color;
 import java.util.List;
-import labirynt.Cell;
 import labirynt.MazeData;
+import labirynt.Cell;
 
 /**
  *

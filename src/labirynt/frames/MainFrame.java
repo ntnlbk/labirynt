@@ -16,7 +16,6 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 import labirynt.Cell;
 import Console.Console;
 import Observers.ConsoleObserver;
@@ -395,26 +394,21 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     private void updateStartCell(int y, int x) {
-        int oldX, oldY;
         int oldStart = mazeData.getStart();
-        oldY = oldStart / mazeData.getColumns();
-        oldX = oldStart - oldY * mazeData.getColumns();
-        List<List<Cell>> cells = mazeData.getMazeCells();
-        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.SPACE);
-        cells.get(y * 2 + 1).set(x * 2 + 1, Cell.START);
-        mazeData.setMazeCells(cells);
-        printMaze();
+        updateCell(y, x, Cell.START, oldStart);
     }
 
     private void updateEndCell(int y, int x) {
-        int oldX, oldY;
         int oldEnd = mazeData.getEnd();
-        oldY = oldEnd / mazeData.getColumns();
-        oldX = oldEnd - oldY * mazeData.getColumns();
-        List<List<Cell>> cells = mazeData.getMazeCells();
-        cells.get(oldY * 2 + 1).set(oldX * 2 + 1, Cell.SPACE);
-        cells.get(y * 2 + 1).set(x * 2 + 1, Cell.END);
-        mazeData.setMazeCells(cells);
+        updateCell(y, x, Cell.END, oldEnd);
+    }
+    
+    private void updateCell(int y, int x, Cell type, int oldCell) {
+        int oldX, oldY;
+        oldY = oldCell / mazeData.getColumns();
+        oldX = oldCell - oldY * mazeData.getColumns();
+        mazeData.setCellType(Cell.SPACE, oldX * 2 + 1, oldY * 2 + 1);
+        mazeData.setCellType(type, x * 2 + 1, y * 2 + 1);
         printMaze();
     }
     

@@ -62,7 +62,7 @@ public class MazeSolver {
     }
     
     private int[] neighbours(int current){
-        return mazeData.getAdjacencyMatrix().getNodesConnectedWitchCurrent(current);
+        return mazeData.getAdjacencyMatrix().getNodesConnectedWitchCurrent(current, mazeData.getColumns());
     }
     
     

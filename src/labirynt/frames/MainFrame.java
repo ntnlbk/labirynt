@@ -18,7 +18,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import labirynt.Cell;
 import Console.Console;
-import Observers.ConsoleObserver;
 import labirynt.MazeSolver;
 import Observers.Observer;
 import labirynt.Path;
@@ -414,18 +413,16 @@ public class MainFrame extends javax.swing.JFrame implements Observer{
         printMaze();
     }
     
-    /*
+    
     @Override
      public void setVisible(boolean b) {
         super.setVisible(b);
         Console console = new Console();
-        //Observer consoleObserver = new ConsoleObserver(this);
-        //console.addObserver(consoleObserver);
-        console.addObserver(this);
         console.setConsoleListener();
+        console.addObserver(this);
         
     }
-    */
+    
      
     @Override
     public void update(String filePath) {
